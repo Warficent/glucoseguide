@@ -1,23 +1,35 @@
 import { useSyncExternalStore } from "react";
 
+export type Reading = { value: number; at: number };
+
 type State = {
   glucose: number | null;
   liked: string[];
   recent: string[];
+  history: Reading[];
 };
 
-const KEY = "novak-nutrition-v1";
+const KEY = "novak-nutrition-v2";
 
 function load(): State {
-  if (typeof window === "undefined") return { glucose: null, liked: [], recent: [] };
+  if (typeof window === "undefined")
+    return { glucose: null, liked: [], recent: [], history: [] };
   try {
     const raw = window.localStorage.getItem(KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw) as Partial<State>;
+      return {
+        glucose: parsed.glucose ?? null,
+        liked: parsed.liked ?? [],
+        recent: parsed.recent ?? [],
+        history: parsed.history ?? [],
+      };
+    }
   } catch {}
-  return { glucose: null, liked: [], recent: [] };
+  return { glucose: null, liked: [], recent: [], history: [] };
 }
 
-let state: State = { glucose: null, liked: [], recent: [] };
+let state: State = { glucose: null, liked: [], recent: [], history: [] };
 let hydrated = false;
 const listeners = new Set<() => void>();
 
@@ -41,7 +53,7 @@ function subscribe(l: () => void) {
   return () => listeners.delete(l);
 }
 
-const serverSnap: State = { glucose: null, liked: [], recent: [] };
+const serverSnap: State = { glucose: null, liked: [], recent: [], history: [] };
 
 export function useAppState<T>(selector: (s: State) => T): T {
   return useSyncExternalStore(
@@ -56,11 +68,18 @@ export function useAppState<T>(selector: (s: State) => T): T {
 
 export const actions = {
   setGlucose(v: number) {
-    state = { ...state, glucose: v };
+    const at = Date.now();
+    // Cap history at 100 readings
+    const history = [...state.history, { value: v, at }].slice(-100);
+    state = { ...state, glucose: v, history };
     emit();
   },
   clearGlucose() {
     state = { ...state, glucose: null };
+    emit();
+  },
+  clearHistory() {
+    state = { ...state, history: [] };
     emit();
   },
   toggleLike(id: string) {
