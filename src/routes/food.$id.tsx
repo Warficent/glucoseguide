@@ -1,9 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/AppShell";
 import { FOODS } from "@/lib/data";
 import { useAppState, actions } from "@/lib/store";
-import { ArrowLeft, Heart } from "lucide-react";
+import { findMealForFood, splitInstructions, type Meal } from "@/lib/mealdb";
+import { ArrowLeft, Heart, ExternalLink, ChefHat, Youtube } from "lucide-react";
 
 export const Route = createFileRoute("/food/$id")({
   head: ({ params }) => {
