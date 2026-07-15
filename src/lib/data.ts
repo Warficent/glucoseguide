@@ -5,6 +5,9 @@ export type Food = {
   impact: number; // 1 raises BG most, 10 raises BG least
   note: string;
   emoji: string;
+  // TheMealDB search term. Prefer a single ingredient (filter.php?i=)
+  // that reliably returns meals for the food.
+  mealSearch: { type: "ingredient" | "name"; term: string };
 };
 
 export const FOODS: Food[] = [
@@ -15,6 +18,7 @@ export const FOODS: Food[] = [
     impact: 6,
     note: "Natural sugars with fiber slow absorption for a moderate rise.",
     emoji: "🍎",
+    mealSearch: { type: "name", term: "apple" },
   },
   {
     id: "horchata",
@@ -23,6 +27,7 @@ export const FOODS: Food[] = [
     impact: 2,
     note: "Sweetened rice-milk drink hits fast — great for lows.",
     emoji: "🥛",
+    mealSearch: { type: "ingredient", term: "rice" },
   },
   {
     id: "hot-dog",
@@ -31,6 +36,7 @@ export const FOODS: Food[] = [
     impact: 7,
     note: "Fat and protein blunt the bun's carbs, causing a slower rise.",
     emoji: "🌭",
+    mealSearch: { type: "ingredient", term: "sausages" },
   },
   {
     id: "meat-ravioli",
@@ -39,6 +45,7 @@ export const FOODS: Food[] = [
     impact: 5,
     note: "Pasta with meat and cheese produces a moderate, delayed rise.",
     emoji: "🥟",
+    mealSearch: { type: "name", term: "ravioli" },
   },
   {
     id: "orange-juice",
@@ -47,6 +54,7 @@ export const FOODS: Food[] = [
     impact: 1,
     note: "Liquid sugar absorbs almost instantly — classic low treatment.",
     emoji: "🧃",
+    mealSearch: { type: "ingredient", term: "orange" },
   },
   {
     id: "lays-original",
@@ -55,6 +63,7 @@ export const FOODS: Food[] = [
     impact: 6,
     note: "Fat slows the starch, giving a moderate rise over time.",
     emoji: "🥔",
+    mealSearch: { type: "ingredient", term: "potatoes" },
   },
   {
     id: "peanut-butter",
@@ -63,6 +72,7 @@ export const FOODS: Food[] = [
     impact: 10,
     note: "High fat, high protein, low carb — barely moves glucose.",
     emoji: "🥜",
+    mealSearch: { type: "ingredient", term: "peanut butter" },
   },
   {
     id: "pizza-slice",
@@ -71,6 +81,7 @@ export const FOODS: Food[] = [
     impact: 4,
     note: "Fat and cheese cause a slow, prolonged rise that often peaks late.",
     emoji: "🍕",
+    mealSearch: { type: "name", term: "pizza" },
   },
   {
     id: "potato-fries",
@@ -79,6 +90,7 @@ export const FOODS: Food[] = [
     impact: 3,
     note: "Starchy potato plus grease produces a strong, sustained rise.",
     emoji: "🍟",
+    mealSearch: { type: "ingredient", term: "potatoes" },
   },
   {
     id: "raw-broccoli",
@@ -87,6 +99,7 @@ export const FOODS: Food[] = [
     impact: 10,
     note: "Fiber-heavy and low carb — almost no glucose impact.",
     emoji: "🥦",
+    mealSearch: { type: "ingredient", term: "broccoli" },
   },
   {
     id: "seafood-paella",
@@ -95,8 +108,10 @@ export const FOODS: Food[] = [
     impact: 4,
     note: "Rice-heavy dish with protein — significant rise, somewhat blunted.",
     emoji: "🥘",
+    mealSearch: { type: "name", term: "paella" },
   },
 ];
+
 
 export type Exercise = {
   id: string;
