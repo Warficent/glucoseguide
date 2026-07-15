@@ -24,8 +24,12 @@ export async function findMealForFood(input: {
 }): Promise<Meal | null> {
   try {
     if (input.type === "ingredient") {
+      const term = input.term
+        .split(" ")
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join("_");
       const list = await fetch(
-        `${BASE}/filter.php?i=${encodeURIComponent(input.term)}`,
+        `${BASE}/filter.php?i=${encodeURIComponent(term)}`,
       ).then((r) => r.json());
       const meals: MealSummary[] | null = list?.meals ?? null;
       if (!meals || meals.length === 0) return null;
