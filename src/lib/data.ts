@@ -18,7 +18,7 @@ export const FOODS: Food[] = [
     impact: 6,
     note: "Natural sugars with fiber slow absorption for a moderate rise.",
     emoji: "🍎",
-    mealSearch: { type: "ingredient", term: "apple" },
+    mealSearch: { type: "name", term: "apple" },
   },
   {
     id: "horchata",
