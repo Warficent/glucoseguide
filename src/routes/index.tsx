@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { GlucoseGauge } from "@/components/GlucoseGauge";
+import { GlucoseChart } from "@/components/GlucoseChart";
 import { EmergencyBanner } from "@/components/EmergencyBanner";
 import { useAppState, actions } from "@/lib/store";
 import { zoneFor } from "@/lib/data";
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const glucose = useAppState((s) => s.glucose);
+  const history = useAppState((s) => s.history);
   const navigate = useNavigate();
   const zone = glucose != null ? zoneFor(glucose) : null;
   const hasReading = glucose != null;
