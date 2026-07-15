@@ -45,6 +45,8 @@ function Home() {
 
         {zone && <EmergencyBanner zone={zone} />}
 
+        <GlucoseChart history={history} />
+
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => navigate({ to: "/log" })}
