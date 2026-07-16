@@ -5,7 +5,21 @@ import { actions } from "@/lib/store";
 
 export const Route = createFileRoute("/log")({
   head: () => ({
-    meta: [{ title: "Log glucose — Glucose Guide" }],
+    meta: [
+      { title: "Log glucose reading — Glucose Guide" },
+      {
+        name: "description",
+        content:
+          "Enter your current blood glucose in mg/dL to unlock personalized food and activity suggestions for Type 1 diabetes.",
+      },
+      { property: "og:title", content: "Log glucose reading — Glucose Guide" },
+      {
+        property: "og:description",
+        content: "Enter your current blood glucose to unlock personalized food and activity suggestions.",
+      },
+      { property: "og:url", content: "https://glucoseguide.lovable.app/log" },
+    ],
+    links: [{ rel: "canonical", href: "https://glucoseguide.lovable.app/log" }],
   }),
   component: LogPage,
 });

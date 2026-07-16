@@ -84,18 +84,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "A mobile-first food and activity guide for people with Type 1 diabetes, tailored to your current blood glucose reading.",
       },
-      { property: "og:title", content: "Glucose Guide — Food & activity guide for Type 1 diabetes" },
-      {
-        property: "og:description",
-        content:
-          "A mobile-first food and activity guide for people with Type 1 diabetes, tailored to your current blood glucose reading.",
-      },
+      { property: "og:site_name", content: "Glucose Guide" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Glucose Guide — Food & activity guide for Type 1 diabetes" },
-      { name: "twitter:description", content: "A mobile-first food and activity guide for people with Type 1 diabetes, tailored to your current blood glucose reading." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bd406e95-3625-4780-8c5b-6a3fae2c94bb/id-preview-593e3b2b--ae6de15e-e1e4-47f2-b2c2-5ccd782c3f7d.lovable.app-1784178659885.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bd406e95-3625-4780-8c5b-6a3fae2c94bb/id-preview-593e3b2b--ae6de15e-e1e4-47f2-b2c2-5ccd782c3f7d.lovable.app-1784178659885.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -105,6 +96,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Glucose Guide",
+          url: "https://glucoseguide.lovable.app",
+          description:
+            "A mobile-first food and activity guide for people with Type 1 diabetes, tailored to your current blood glucose reading.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Glucose Guide",
+          url: "https://glucoseguide.lovable.app",
+        }),
       },
     ],
   }),

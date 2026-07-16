@@ -10,10 +10,35 @@ import { ArrowLeft, Heart, ExternalLink, ChefHat, Youtube } from "lucide-react";
 export const Route = createFileRoute("/food/$id")({
   head: ({ params }) => {
     const food = FOODS.find((f) => f.id === params.id);
+    if (!food) {
+      return { meta: [{ title: "Food — Glucose Guide" }] };
+    }
+    const url = `https://glucoseguide.lovable.app/food/${food.id}`;
+    const description = `${food.name}: ~${food.carbs}g carbs, glucose impact ${food.impact}/10. ${food.note}`.slice(0, 200);
     return {
       meta: [
+        { title: `${food.name} — carbs & glucose impact | Glucose Guide` },
+        { name: "description", content: description },
+        { property: "og:title", content: `${food.name} — carbs & glucose impact` },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "article" },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
         {
-          title: food ? `${food.name} — Glucose Guide` : "Food — Glucose Guide",
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Recipe",
+            name: food.name,
+            description: food.note,
+            recipeCategory: "Main",
+            nutrition: {
+              "@type": "NutritionInformation",
+              carbohydrateContent: `${food.carbs} g`,
+            },
+          }),
         },
       ],
     };
@@ -72,9 +97,9 @@ function FoodDetail() {
           <div className="mx-auto grid h-24 w-24 place-items-center rounded-3xl bg-white text-5xl shadow-sm">
             {food.emoji}
           </div>
-          <h1 className="mt-4 font-serif text-3xl font-semibold text-ink">
+          <h2 className="mt-4 font-serif text-3xl font-semibold text-ink">
             {food.name}
-          </h1>
+          </h2>
         </div>
 
         <div className="grid grid-cols-2 gap-3">

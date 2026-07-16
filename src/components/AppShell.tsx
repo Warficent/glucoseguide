@@ -16,7 +16,7 @@ export function AppShell({
       <header className="sticky top-0 z-30 bg-primary text-white shadow-md">
         <div className="mx-auto flex max-w-md items-center justify-between px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-3">
           <h1 className="font-serif text-xl font-semibold tracking-tight">
-            Glucose Guide
+            Glucose Guide — Blood Sugar Tracking
           </h1>
           <span className="text-xs uppercase tracking-[0.2em] text-white/70">
             {title}
