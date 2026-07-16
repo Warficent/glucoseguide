@@ -6,7 +6,23 @@ import { EXERCISES, zoneFor, zoneLabel, zoneColor } from "@/lib/data";
 import { Info } from "lucide-react";
 
 export const Route = createFileRoute("/move")({
-  head: () => ({ meta: [{ title: "Move — Glucose Guide" }] }),
+  head: () => ({
+    meta: [
+      { title: "Activity guidance for your glucose — Glucose Guide" },
+      {
+        name: "description",
+        content:
+          "See safe exercise options with estimated glucose reduction — or a warning to hold off when your blood sugar is unsafe for activity.",
+      },
+      { property: "og:title", content: "Activity guidance for your glucose — Glucose Guide" },
+      {
+        property: "og:description",
+        content: "Safe exercise options and estimated glucose reduction based on your reading.",
+      },
+      { property: "og:url", content: "https://glucoseguide.lovable.app/move" },
+    ],
+    links: [{ rel: "canonical", href: "https://glucoseguide.lovable.app/move" }],
+  }),
   component: MovePage,
 });
 
