@@ -65,9 +65,13 @@ function Home() {
 
         {zone && <EmergencyBanner zone={zone} />}
 
-        <GlucoseChart history={history} />
+        <section aria-labelledby="trend-heading">
+          <h2 id="trend-heading" className="sr-only">Glucose trend</h2>
+          <GlucoseChart history={history} />
+        </section>
 
-        <div className="grid grid-cols-2 gap-3">
+        <section aria-labelledby="actions-heading" className="grid grid-cols-2 gap-3">
+          <h2 id="actions-heading" className="sr-only col-span-2">Quick actions</h2>
           <button
             onClick={() => navigate({ to: "/log" })}
             className="col-span-2 flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-4 font-semibold text-white shadow-lg shadow-black/20 transition active:scale-[0.98]"
