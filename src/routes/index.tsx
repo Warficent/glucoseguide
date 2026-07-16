@@ -108,7 +108,7 @@ function Home() {
               <Activity className="h-5 w-5" /> Move
             </div>
           )}
-        </div>
+        </section>
 
         <p className="pt-2 text-center text-xs text-white/50">
           Informational only. Not medical advice.
