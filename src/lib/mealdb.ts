@@ -77,6 +77,19 @@ function normalize(m: Record<string, string>): Meal {
 export function splitInstructions(text: string): string[] {
   return text
     .split(/\r?\n+|(?<=[.!?])\s+(?=[A-Z0-9])/)
-    .map((s) => s.trim())
-    .filter((s) => s.length > 0 && s.length < 600);
+    .map((s) =>
+      s
+        // Strip leading "Step 1", "STEP 1:", "1)", "1." style prefixes
+        .replace(/^\s*(?:step\s*)?\d+\s*[:.\)\-]?\s*/i, "")
+        .trim(),
+    )
+    .filter(
+      (s) =>
+        s.length > 0 &&
+        s.length < 600 &&
+        // Skip fragments that are only a number or "Step N"
+        !/^(?:step\s*)?\d+\s*[:.\)\-]?\s*$/i.test(s) &&
+        // Require at least some letters
+        /[a-zA-Z]/.test(s),
+    );
 }
