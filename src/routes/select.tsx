@@ -6,7 +6,7 @@ import { useAppState, actions } from "@/lib/store";
 import { Heart, Search, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/select")({
-  head: () => ({ meta: [{ title: "Browse foods — Novak Nutrition" }] }),
+  head: () => ({ meta: [{ title: "Browse foods — Glucose Guide" }] }),
   component: SelectPage,
 });
 

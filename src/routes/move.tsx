@@ -6,7 +6,7 @@ import { EXERCISES, zoneFor, zoneLabel, zoneColor } from "@/lib/data";
 import { Info } from "lucide-react";
 
 export const Route = createFileRoute("/move")({
-  head: () => ({ meta: [{ title: "Move — Novak Nutrition" }] }),
+  head: () => ({ meta: [{ title: "Move — Glucose Guide" }] }),
   component: MovePage,
 });
 

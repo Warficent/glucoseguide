@@ -6,7 +6,7 @@ import { suggestFoods, zoneFor, zoneLabel, zoneColor } from "@/lib/data";
 import { Heart, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/suggest")({
-  head: () => ({ meta: [{ title: "Suggestions — Novak Nutrition" }] }),
+  head: () => ({ meta: [{ title: "Suggestions — Glucose Guide" }] }),
   component: SuggestPage,
 });
 

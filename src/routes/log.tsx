@@ -5,7 +5,7 @@ import { actions } from "@/lib/store";
 
 export const Route = createFileRoute("/log")({
   head: () => ({
-    meta: [{ title: "Log glucose — Novak Nutrition" }],
+    meta: [{ title: "Log glucose — Glucose Guide" }],
   }),
   component: LogPage,
 });
