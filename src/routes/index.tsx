@@ -8,6 +8,25 @@ import { zoneFor } from "@/lib/data";
 import { Activity, ListChecks, Sparkles, Plus } from "lucide-react";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Glucose Guide — Food & activity guide for Type 1 diabetes" },
+      {
+        name: "description",
+        content:
+          "Log your blood glucose and get instant food, recipe, and activity guidance tailored to your reading — built for people living with Type 1 diabetes.",
+      },
+      { property: "og:title", content: "Glucose Guide — Food & activity for Type 1 diabetes" },
+      {
+        property: "og:description",
+        content:
+          "Log your blood glucose and get instant food, recipe, and activity guidance tailored to your reading.",
+      },
+      { property: "og:url", content: "https://glucoseguide.lovable.app/" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://glucoseguide.lovable.app/" }],
+  }),
   component: Home,
 });
 
