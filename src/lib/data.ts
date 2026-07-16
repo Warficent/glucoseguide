@@ -128,7 +128,7 @@ export const FOODS: Food[] = [
     impact: 3,
     note: "Rice and breaded chicken with sweet curry sauce — large, prolonged rise.",
     emoji: "🍛",
-    mealSearch: { type: "name", term: "Chicken Katsu" },
+    mealSearch: { type: "name", term: "Katsu Chicken curry" },
   },
   {
     id: "sushi",
