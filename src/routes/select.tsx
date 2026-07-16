@@ -6,7 +6,23 @@ import { useAppState, actions } from "@/lib/store";
 import { Heart, Search, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/select")({
-  head: () => ({ meta: [{ title: "Browse foods — Glucose Guide" }] }),
+  head: () => ({
+    meta: [
+      { title: "Browse foods & recipes — Glucose Guide" },
+      {
+        name: "description",
+        content:
+          "Search 30+ recipes with carb counts and 1–10 glucose impact scores. Save favorites and revisit recent picks for easier meal decisions.",
+      },
+      { property: "og:title", content: "Browse foods & recipes — Glucose Guide" },
+      {
+        property: "og:description",
+        content: "Search 30+ recipes with carb counts and 1–10 glucose impact scores.",
+      },
+      { property: "og:url", content: "https://glucoseguide.lovable.app/select" },
+    ],
+    links: [{ rel: "canonical", href: "https://glucoseguide.lovable.app/select" }],
+  }),
   component: SelectPage,
 });
 
