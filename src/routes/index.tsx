@@ -41,6 +41,7 @@ function Home() {
     <AppShell title="Home" tone="dark">
       <div className="space-y-6">
         <section className="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+          <h2 className="sr-only">Current glucose reading</h2>
           <p className="text-center text-xs uppercase tracking-[0.24em] text-white/60">
             Current reading
           </p>
