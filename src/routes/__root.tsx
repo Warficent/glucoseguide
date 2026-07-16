@@ -76,6 +76,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
+      { name: "google-site-verification", content: "poE_nluH9ney0x5S5NqBP9NUvkEQvvbfUi1GL7OCOio" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "theme-color", content: "#6C2BD9" },
       { title: "Glucose Guide — Food & activity guide for Type 1 diabetes" },
