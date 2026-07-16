@@ -6,7 +6,23 @@ import { suggestFoods, zoneFor, zoneLabel, zoneColor } from "@/lib/data";
 import { Heart, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/suggest")({
-  head: () => ({ meta: [{ title: "Suggestions — Glucose Guide" }] }),
+  head: () => ({
+    meta: [
+      { title: "Food suggestions for your glucose — Glucose Guide" },
+      {
+        name: "description",
+        content:
+          "Get four food recommendations tailored to your latest blood glucose reading — fast sugar for lows, gentle options for highs, balanced picks in range.",
+      },
+      { property: "og:title", content: "Food suggestions for your glucose — Glucose Guide" },
+      {
+        property: "og:description",
+        content: "Four food picks tailored to your latest blood glucose reading.",
+      },
+      { property: "og:url", content: "https://glucoseguide.lovable.app/suggest" },
+    ],
+    links: [{ rel: "canonical", href: "https://glucoseguide.lovable.app/suggest" }],
+  }),
   component: SuggestPage,
 });
 
