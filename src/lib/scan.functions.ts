@@ -67,11 +67,11 @@ Return JSON with:
       const rating = Math.max(1, Math.min(10, Math.round(output.rating)));
       const carbs = Math.max(0, Math.round(output.carbs));
       return { ...output, rating, carbs };
-    } catch (err) {
+    } catch (err: unknown) {
       if (NoObjectGeneratedError.isInstance(err)) {
         try {
-          const parsed = JSON.parse(err.text ?? "{}");
-          return Schema.parse(parsed);
+          const text = (err as { text?: string }).text ?? "{}";
+          return Schema.parse(JSON.parse(text));
         } catch {}
       }
       throw err;
