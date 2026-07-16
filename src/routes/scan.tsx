@@ -11,7 +11,7 @@ import { Camera, Loader2, RotateCcw, Upload } from "lucide-react";
 export const Route = createFileRoute("/scan")({
   head: () => ({
     meta: [
-      { title: "Scan food — Novak Nutrition" },
+      { title: "Scan food — Glucose Guide" },
       {
         name: "description",
         content:

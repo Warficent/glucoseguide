@@ -13,7 +13,7 @@ export const Route = createFileRoute("/food/$id")({
     return {
       meta: [
         {
-          title: food ? `${food.name} — Novak Nutrition` : "Food — Novak Nutrition",
+          title: food ? `${food.name} — Glucose Guide` : "Food — Glucose Guide",
         },
       ],
     };

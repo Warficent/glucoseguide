@@ -78,13 +78,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "theme-color", content: "#6C2BD9" },
-      { title: "Novak Nutrition — Food & activity guide for Type 1 diabetes" },
+      { title: "Glucose Guide — Food & activity guide for Type 1 diabetes" },
       {
         name: "description",
         content:
           "A mobile-first food and activity guide for people with Type 1 diabetes, tailored to your current blood glucose reading.",
       },
-      { property: "og:title", content: "Novak Nutrition" },
+      { property: "og:title", content: "Glucose Guide" },
       {
         property: "og:description",
         content:
