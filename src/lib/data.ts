@@ -185,13 +185,13 @@ export const FOODS: Food[] = [
     mealSearch: { type: "name", term: "Eton Mess" },
   },
   {
-    id: "peach-blueberry-grunt",
-    name: "Peach & Blueberry Grunt",
+    id: "strawberry-rhubarb-pie",
+    name: "Strawberry Rhubarb Pie",
     carbs: 55,
     impact: 3,
-    note: "Fruit sugars and biscuit topping — moderate-to-fast rise.",
-    emoji: "🫐",
-    mealSearch: { type: "name", term: "Peach & Blueberry Grunt" },
+    note: "Fruit sugars in a buttery crust — moderate-to-fast rise.",
+    emoji: "🥧",
+    mealSearch: { type: "name", term: "Strawberry Rhubarb Pie" },
   },
   {
     id: "chocolate-souffle",
