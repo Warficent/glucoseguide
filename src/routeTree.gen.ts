@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SuggestRouteImport } from './routes/suggest'
 import { Route as SelectRouteImport } from './routes/select'
+import { Route as ScanRouteImport } from './routes/scan'
 import { Route as MoveRouteImport } from './routes/move'
 import { Route as LogRouteImport } from './routes/log'
 import { Route as IndexRouteImport } from './routes/index'
@@ -24,6 +25,11 @@ const SuggestRoute = SuggestRouteImport.update({
 const SelectRoute = SelectRouteImport.update({
   id: '/select',
   path: '/select',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScanRoute = ScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MoveRoute = MoveRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/log': typeof LogRoute
   '/move': typeof MoveRoute
+  '/scan': typeof ScanRoute
   '/select': typeof SelectRoute
   '/suggest': typeof SuggestRoute
   '/food/$id': typeof FoodIdRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/log': typeof LogRoute
   '/move': typeof MoveRoute
+  '/scan': typeof ScanRoute
   '/select': typeof SelectRoute
   '/suggest': typeof SuggestRoute
   '/food/$id': typeof FoodIdRoute
@@ -68,22 +76,39 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/log': typeof LogRoute
   '/move': typeof MoveRoute
+  '/scan': typeof ScanRoute
   '/select': typeof SelectRoute
   '/suggest': typeof SuggestRoute
   '/food/$id': typeof FoodIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/log' | '/move' | '/select' | '/suggest' | '/food/$id'
+  fullPaths:
+    | '/'
+    | '/log'
+    | '/move'
+    | '/scan'
+    | '/select'
+    | '/suggest'
+    | '/food/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/log' | '/move' | '/select' | '/suggest' | '/food/$id'
-  id: '__root__' | '/' | '/log' | '/move' | '/select' | '/suggest' | '/food/$id'
+  to: '/' | '/log' | '/move' | '/scan' | '/select' | '/suggest' | '/food/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/log'
+    | '/move'
+    | '/scan'
+    | '/select'
+    | '/suggest'
+    | '/food/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LogRoute: typeof LogRoute
   MoveRoute: typeof MoveRoute
+  ScanRoute: typeof ScanRoute
   SelectRoute: typeof SelectRoute
   SuggestRoute: typeof SuggestRoute
   FoodIdRoute: typeof FoodIdRoute
@@ -103,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/select'
       fullPath: '/select'
       preLoaderRoute: typeof SelectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scan': {
+      id: '/scan'
+      path: '/scan'
+      fullPath: '/scan'
+      preLoaderRoute: typeof ScanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/move': {
@@ -140,6 +172,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LogRoute: LogRoute,
   MoveRoute: MoveRoute,
+  ScanRoute: ScanRoute,
   SelectRoute: SelectRoute,
   SuggestRoute: SuggestRoute,
   FoodIdRoute: FoodIdRoute,

@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { Home, Sparkles, Activity, ListChecks } from "lucide-react";
+import { Home, Sparkles, Activity, ListChecks, Camera } from "lucide-react";
 
 const tabs = [
   { to: "/", label: "Home", Icon: Home },
   { to: "/suggest", label: "Suggest", Icon: Sparkles },
+  { to: "/scan", label: "Scan", Icon: Camera },
   { to: "/move", label: "Move", Icon: Activity },
   { to: "/select", label: "Select", Icon: ListChecks },
 ] as const;
