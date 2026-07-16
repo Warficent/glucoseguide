@@ -11,13 +11,20 @@ import { Camera, Loader2, RotateCcw, Upload } from "lucide-react";
 export const Route = createFileRoute("/scan")({
   head: () => ({
     meta: [
-      { title: "Scan food — Glucose Guide" },
+      { title: "Scan food with your camera — Glucose Guide" },
       {
         name: "description",
         content:
-          "Snap a photo of any food and get a 1–10 rating based on your current blood glucose reading.",
+          "Snap a photo of any food and get an AI-powered 1–10 rating based on your current blood glucose reading — fast sugar, balanced, or gentle picks.",
       },
+      { property: "og:title", content: "Scan food with your camera — Glucose Guide" },
+      {
+        property: "og:description",
+        content: "Snap a food photo and get an AI 1–10 rating tailored to your glucose reading.",
+      },
+      { property: "og:url", content: "https://glucoseguide.lovable.app/scan" },
     ],
+    links: [{ rel: "canonical", href: "https://glucoseguide.lovable.app/scan" }],
   }),
   component: ScanPage,
 });
