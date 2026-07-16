@@ -171,7 +171,7 @@ function Recipe({ meal }: { meal: Meal }) {
             <li key={i} className="flex items-center justify-between px-4 py-2.5">
               <span className="text-sm text-ink">{ing.name}</span>
               <span className="text-xs font-medium text-ink/60">
-                {ing.measure || "—"}
+                {ing.measure && ing.measure !== "-" ? ing.measure : "to taste"}
               </span>
             </li>
           ))}
