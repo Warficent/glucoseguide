@@ -97,9 +97,9 @@ function FoodDetail() {
           <div className="mx-auto grid h-24 w-24 place-items-center rounded-3xl bg-white text-5xl shadow-sm">
             {food.emoji}
           </div>
-          <h1 className="mt-4 font-serif text-3xl font-semibold text-ink">
+          <h2 className="mt-4 font-serif text-3xl font-semibold text-ink">
             {food.name}
-          </h1>
+          </h2>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
