@@ -257,13 +257,13 @@ export const FOODS: Food[] = [
     mealSearch: { type: "name", term: "Tuna Nicoise" },
   },
   {
-    id: "lentil-soup",
-    name: "Lentil Soup",
+    id: "split-pea-soup",
+    name: "Split Pea Soup",
     carbs: 30,
     impact: 7,
-    note: "High-fiber lentils release glucose slowly — modest, drawn-out rise.",
+    note: "High-fiber legumes release glucose slowly — modest, drawn-out rise.",
     emoji: "🍲",
-    mealSearch: { type: "name", term: "Lentil Soup" },
+    mealSearch: { type: "name", term: "Split Pea Soup" },
   },
   {
     id: "vegan-chocolate-cake",
