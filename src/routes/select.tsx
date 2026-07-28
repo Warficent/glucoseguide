@@ -51,9 +51,9 @@ function SelectPage() {
   const selected = search.ingredients;
 
   const setIngredients = (next: string[]) =>
-    navigate({ search: (prev) => ({ ...prev, ingredients: next }) });
+    navigate({ to: ".", search: (prev) => ({ ...prev, ingredients: next }) });
   const setMode = (next: IngredientMode) =>
-    navigate({ search: (prev) => ({ ...prev, mode: next }) });
+    navigate({ to: ".", search: (prev) => ({ ...prev, mode: next }) });
 
   const nameFiltered = useMemo(
     () => FOODS.filter((f) => f.name.toLowerCase().includes(q.toLowerCase())),
