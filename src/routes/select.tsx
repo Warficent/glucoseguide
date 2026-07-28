@@ -50,10 +50,11 @@ function SelectPage() {
   const mode: IngredientMode = search.mode === "only" ? "only" : "any";
   const selected = search.ingredients;
 
+  type SearchT = z.infer<typeof searchSchema>;
   const setIngredients = (next: string[]) =>
-    navigate({ to: ".", search: (prev) => ({ ...prev, ingredients: next }) });
+    navigate({ to: ".", search: (prev: SearchT) => ({ ...prev, ingredients: next }) });
   const setMode = (next: IngredientMode) =>
-    navigate({ to: ".", search: (prev) => ({ ...prev, mode: next }) });
+    navigate({ to: ".", search: (prev: SearchT) => ({ ...prev, mode: next }) });
 
   const nameFiltered = useMemo(
     () => FOODS.filter((f) => f.name.toLowerCase().includes(q.toLowerCase())),
