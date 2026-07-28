@@ -1286,3 +1286,62 @@ export function suggestFoods(mgdl: number, liked: string[]): Food[] {
   });
   return pool.slice(0, 4);
 }
+
+import { INGREDIENT_INDEX } from "./ingredient-index.generated";
+
+export type IngredientMode = "any" | "only";
+
+export type IngredientMatch = {
+  food: Food;
+  matched: number;
+  total: number;
+};
+
+export function ingredientsForFood(id: string): string[] {
+  return INGREDIENT_INDEX[id] ?? [];
+}
+
+// Fuzzy match: an ingredient in the recipe counts as "have" if any selected
+// pantry item is a substring match (either direction). Handles "tomato" vs
+// "cherry tomato", "chicken" vs "chicken breast", etc.
+function hasIngredient(recipeIng: string, pantry: Set<string>): boolean {
+  if (pantry.has(recipeIng)) return true;
+  for (const p of pantry) {
+    if (recipeIng.includes(p) || p.includes(recipeIng)) return true;
+  }
+  return false;
+}
+
+export function filterFoodsByIngredients(
+  foods: Food[],
+  selected: string[],
+  mode: IngredientMode,
+): IngredientMatch[] {
+  if (selected.length === 0) {
+    return foods.map((f) => {
+      const total = ingredientsForFood(f.id).length;
+      return { food: f, matched: 0, total };
+    });
+  }
+  const pantry = new Set(selected.map((s) => s.toLowerCase().trim()));
+  const results: IngredientMatch[] = [];
+  for (const food of foods) {
+    const ings = ingredientsForFood(food.id);
+    if (ings.length === 0) continue;
+    const matched = ings.filter((i) => hasIngredient(i, pantry)).length;
+    if (mode === "any") {
+      if (matched > 0) results.push({ food, matched, total: ings.length });
+    } else {
+      // "only": every recipe ingredient must be covered by pantry
+      if (matched === ings.length) results.push({ food, matched, total: ings.length });
+    }
+  }
+  results.sort((a, b) => {
+    const ra = a.matched / a.total;
+    const rb = b.matched / b.total;
+    if (rb !== ra) return rb - ra;
+    return a.food.name.localeCompare(b.food.name);
+  });
+  return results;
+}
+
