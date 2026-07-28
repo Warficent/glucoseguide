@@ -1,23 +1,37 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { zodValidator, fallback } from "@tanstack/zod-adapter";
+import { z } from "zod";
 import { AppShell } from "@/components/AppShell";
-import { FOODS } from "@/lib/data";
+import { IngredientPicker } from "@/components/IngredientPicker";
+import {
+  FOODS,
+  filterFoodsByIngredients,
+  ingredientsForFood,
+  type IngredientMode,
+} from "@/lib/data";
 import { useAppState, actions } from "@/lib/store";
 import { Heart, Search, ArrowRight } from "lucide-react";
 
+const searchSchema = z.object({
+  ingredients: fallback(z.string().array(), []).default([]),
+  mode: fallback(z.string(), "any").default("any"),
+});
+
 export const Route = createFileRoute("/select")({
+  validateSearch: zodValidator(searchSchema),
   head: () => ({
     meta: [
       { title: "Browse foods & recipes — Glucose Guide" },
       {
         name: "description",
         content:
-          "Search 30+ recipes with carb counts and 1–10 glucose impact scores. Save favorites and revisit recent picks for easier meal decisions.",
+          "Search 130+ recipes with carb counts and 1–10 glucose impact scores. Filter by ingredients you have on hand.",
       },
       { property: "og:title", content: "Browse foods & recipes — Glucose Guide" },
       {
         property: "og:description",
-        content: "Search 30+ recipes with carb counts and 1–10 glucose impact scores.",
+        content: "Search recipes with carb counts and 1–10 glucose impact scores.",
       },
       { property: "og:url", content: "https://glucoseguide.lovable.app/select" },
     ],
@@ -28,17 +42,30 @@ export const Route = createFileRoute("/select")({
 
 function SelectPage() {
   const [q, setQ] = useState("");
+  const search = Route.useSearch();
+  const navigate = useNavigate({ from: "/select" });
   const liked = useAppState((s) => s.liked);
   const recent = useAppState((s) => s.recent);
 
-  const filtered = useMemo(
-    () =>
-      FOODS.filter((f) => f.name.toLowerCase().includes(q.toLowerCase())).sort(
-        (a, b) => a.name.localeCompare(b.name),
-      ),
+  const mode: IngredientMode = search.mode === "only" ? "only" : "any";
+  const selected = search.ingredients;
+
+  const setIngredients = (next: string[]) =>
+    navigate({ search: (prev) => ({ ...prev, ingredients: next }) });
+  const setMode = (next: IngredientMode) =>
+    navigate({ search: (prev) => ({ ...prev, mode: next }) });
+
+  const nameFiltered = useMemo(
+    () => FOODS.filter((f) => f.name.toLowerCase().includes(q.toLowerCase())),
     [q],
   );
 
+  const results = useMemo(
+    () => filterFoodsByIngredients(nameFiltered, selected, mode),
+    [nameFiltered, selected, mode],
+  );
+
+  const showRecent = !q && selected.length === 0;
   const recentFoods = recent
     .map((id) => FOODS.find((f) => f.id === id))
     .filter((f): f is (typeof FOODS)[number] => Boolean(f));
@@ -46,6 +73,13 @@ function SelectPage() {
   return (
     <AppShell title="Select">
       <div className="space-y-5">
+        <IngredientPicker
+          selected={selected}
+          mode={mode}
+          onChange={setIngredients}
+          onModeChange={setMode}
+        />
+
         <div className="relative">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
           <input
@@ -56,7 +90,7 @@ function SelectPage() {
           />
         </div>
 
-        {!q && recentFoods.length > 0 && (
+        {showRecent && recentFoods.length > 0 && (
           <section>
             <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink/50">
               Recently viewed
@@ -75,21 +109,46 @@ function SelectPage() {
         )}
 
         <section>
-          <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink/50">
-            All foods
-          </h2>
+          <div className="mb-2 flex items-baseline justify-between">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-ink/50">
+              {selected.length > 0
+                ? mode === "only"
+                  ? "You can make right now"
+                  : "Uses ingredients you have"
+                : "All foods"}
+            </h2>
+            {selected.length > 0 && (
+              <span className="text-xs text-ink/50 tabular-nums">
+                {results.length} match{results.length === 1 ? "" : "es"}
+              </span>
+            )}
+          </div>
           <ul className="space-y-2">
-            {filtered.map((f) => (
-              <FoodRow
-                key={f.id}
-                food={f}
-                liked={liked.includes(f.id)}
-                onLike={() => actions.toggleLike(f.id)}
-              />
-            ))}
-            {filtered.length === 0 && (
+            {results
+              .sort((a, b) => {
+                if (selected.length === 0) return a.food.name.localeCompare(b.food.name);
+                return 0;
+              })
+              .map(({ food, matched, total }) => (
+                <FoodRow
+                  key={food.id}
+                  food={food}
+                  liked={liked.includes(food.id)}
+                  onLike={() => actions.toggleLike(food.id)}
+                  matchInfo={
+                    selected.length > 0 && total > 0
+                      ? `${matched} of ${total} ingredients`
+                      : undefined
+                  }
+                />
+              ))}
+            {results.length === 0 && (
               <li className="rounded-2xl bg-lavender p-6 text-center text-sm text-ink/60">
-                No foods match "{q}".
+                {selected.length > 0
+                  ? mode === "only"
+                    ? "No recipes match. Try switching to Any of these."
+                    : "No recipes use those ingredients yet."
+                  : `No foods match "${q}".`}
               </li>
             )}
           </ul>
@@ -103,10 +162,12 @@ function FoodRow({
   food,
   liked,
   onLike,
+  matchInfo,
 }: {
   food: (typeof FOODS)[number];
   liked: boolean;
   onLike: () => void;
+  matchInfo?: string;
 }) {
   return (
     <li className="flex items-center gap-3 rounded-2xl bg-lavender p-3">
@@ -120,7 +181,9 @@ function FoodRow({
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate font-semibold text-ink">{food.name}</p>
-          <p className="text-xs text-ink/60">{food.carbs}g carbs</p>
+          <p className="text-xs text-ink/60">
+            {food.carbs}g carbs{matchInfo ? ` · ${matchInfo}` : ""}
+          </p>
         </div>
         <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary tabular-nums">
           {food.impact}/10
