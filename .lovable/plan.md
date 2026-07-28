@@ -1,70 +1,59 @@
-## Dexcom CGM Integration — Architecture (planning only, no code)
+## SuperCook-style ingredient filter
 
-This is a design doc for later. Nothing gets built yet.
+Let users pick ingredients they have, then narrow the food list to recipes that either **only** use those ingredients or **contain some** of them.
 
-### Why not direct Bluetooth
-Dexcom G6/G7 transmitters broadcast on BLE, but the payload is AES-encrypted and paired to Dexcom's own receiver or phone app. Web Bluetooth cannot decrypt it, and doing so unofficially violates Dexcom's terms and FDA constraints. Any real integration goes through Dexcom's cloud, not the sensor.
+### Where it lives
 
-### Recommended path: Dexcom Share via the official API
+New surface on the **Select** screen (`src/routes/select.tsx`), above the search bar:
 
-```text
- Dexcom Sensor ──BLE──> Dexcom mobile app ──> Dexcom Cloud
-                                                    │
-                                        OAuth 2.0   │  (readings, 5-min delay)
-                                                    ▼
-                                          Glucose Guide server
-                                                    │
-                                                    ▼
-                                          Glucose Guide UI
-```
+- A collapsible "What's in your kitchen?" panel with a searchable, tag-style ingredient picker.
+- Selected ingredients render as removable chips.
+- Two-mode toggle: **Any of these** (recipe includes ≥1 selected ingredient) / **Only these** (recipe uses a subset of selected ingredients).
+- "Clear" button to reset.
 
-- Sandbox: `https://sandbox-api.dexcom.com` — free, fake data, for development
-- Production: `https://api.dexcom.com` — requires Dexcom review + approval before go-live
-- Endpoint we care about: `GET /v3/users/self/egvs` (estimated glucose values)
-- Latency: readings arrive ~5 minutes behind the sensor
+The existing text search and Recently Viewed still work; ingredient filter composes with them.
 
-### What we'd need to build
+Each food row gets a small "3 of 5 ingredients matched" hint when a filter is active.
 
-1. **Accounts & storage** (requires Lovable Cloud)
-   - Auth so each patient's Dexcom tokens are scoped to them
-   - `cgm_connections` table: `user_id`, `access_token`, `refresh_token`, `expires_at`, `provider` — RLS locked to owner
-   - `glucose_readings` table replacing today's `localStorage` history
+### Where the ingredient data comes from
 
-2. **Dexcom app registration** (user does this once)
-   - Sign up at developer.dexcom.com, create an app, get Client ID + Secret
-   - Set redirect URI to `https://<app>.lovable.app/api/dexcom/callback`
-   - Secrets stored via Lovable Cloud secrets, never in code
+Ingredients today are fetched per-recipe from TheMealDB on the food detail page — there is no local ingredient index. For a fast, offline-capable filter across all 131 recipes we prebuild one:
 
-3. **OAuth flow** (server routes, not client)
-   - `GET /api/dexcom/connect` → redirects to Dexcom authorize URL
-   - `GET /api/dexcom/callback` → exchanges code for tokens, saves to DB
-   - Server function `refreshDexcomToken()` — refresh tokens expire, must rotate
+- Add `scripts/build-ingredient-index.ts` — a one-time Node script that walks `FOODS`, calls `findMealForFood` for each, and writes a normalized index to `src/lib/ingredient-index.generated.ts`.
+- Shape: `{ [foodId]: string[] }` of lowercased, singularized ingredient names (e.g. `"tomatoes"` → `"tomato"`), plus a sorted union `ALL_INGREDIENTS: string[]` for the picker.
+- Committed to the repo so the app ships with zero extra API calls. Re-run the script whenever `FOODS` changes.
 
-4. **Reading sync**
-   - Server function `fetchLatestReading(userId)` → calls Dexcom `/egvs`, upserts newest reading
-   - Polling: client `useQuery` with `refetchInterval: 60_000` calls the server function
-   - Optional later: pg_cron hitting `/api/public/cron/sync-cgm` for background refresh even when app is closed
+### Filtering logic
 
-5. **UI changes**
-   - Settings screen: "Connect Dexcom" button + status ("Connected · last reading 2 min ago")
-   - Home gauge reads from `glucose_readings` (live) instead of manual entry
-   - Manual entry stays as fallback for users without Dexcom
-   - Trend chart pulls straight from the readings table — no more 100-entry cap
+New helpers in `src/lib/data.ts` (kept next to `suggestFoods`):
 
-6. **Safety**
-   - Show "Reading is X minutes old" — Dexcom Share is not real-time
-   - Disclaimer that this is informational, not a medical device — the sensor and Dexcom app remain the source of truth
-   - Emergency banner logic already exists and continues to apply
+- `filterFoodsByIngredients(foods, selected, mode)` where `mode: "any" | "only"`.
+- `"any"`: keep foods whose ingredient set intersects `selected` (sort by match count desc, then name).
+- `"only"`: keep foods whose ingredient set is a subset of `selected` (a "you can cook this right now" list).
+- Case/whitespace-insensitive comparison against the generated index.
 
-### Open questions to resolve before build
-- Multi-user or single-user app? (drives whether we need auth + Cloud, or just one connection)
-- Do we also want Nightscout as a second option (helps users who don't want to register a Dexcom developer app)?
-- Retention policy for readings (30 days? forever?)
+### State
 
-### Not doing
-- Direct BLE to the sensor
-- Reverse-engineering the Dexcom BLE protocol
-- Reading from the phone's Dexcom app storage
-- Real-time push (Dexcom API is pull-only)
+Selected ingredients + mode live in URL search params on `/select` so the filter is shareable and survives reloads:
 
-When you're ready to actually build this, we'll start with step 1 (enable Lovable Cloud + auth) and go from there.
+- `ingredients: string[]` and `mode: "any" | "only"` validated with `zodValidator` + `fallback` per the search-params guidance.
+- Read via `Route.useSearch()`; update via `navigate({ search: prev => ... })`.
+
+Liked/recent state stays in the existing store.
+
+### Ingredient picker UX
+
+- Text input filters `ALL_INGREDIENTS` as you type; Enter or tap adds a chip.
+- Common categories (Produce, Dairy, Pantry, Protein) as quick-add chip rows above the input — categories derived heuristically in the build script from a small keyword map.
+- Empty state when a filter yields nothing: "No recipes match. Try switching to Any of these."
+
+### Files touched
+
+- New: `scripts/build-ingredient-index.ts`, `src/lib/ingredient-index.generated.ts`, `src/components/IngredientPicker.tsx`.
+- Edited: `src/routes/select.tsx` (integrate picker + filter), `src/lib/data.ts` (add filter helpers), `package.json` (script entry).
+
+### Not in scope
+
+- No changes to Suggest, Move, Home, Scan, or Food Detail.
+- No server-side persistence of the pantry (URL-only for now; can promote to store later if you want it to persist across pages).
+- No new recipes; filter operates over the existing 131.
