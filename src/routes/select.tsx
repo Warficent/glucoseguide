@@ -43,7 +43,7 @@ export const Route = createFileRoute("/select")({
 function SelectPage() {
   const [q, setQ] = useState("");
   const search = Route.useSearch();
-  const navigate = useNavigate({ from: "/select" });
+  const navigate = Route.useNavigate();
   const liked = useAppState((s) => s.liked);
   const recent = useAppState((s) => s.recent);
 
