@@ -12,11 +12,28 @@
 // Where a food has a published range, the HIGHER value is used so the score
 // errs on the side of predicting a faster rise.
 //
+// The model follows the published evidence base:
+//   - Jenkins 2002 (Am J Clin Nutr 76:266S): GI is glucose-referenced, a mixed
+//     meal's GI is the carbohydrate-weighted average of its carb sources, and
+//     GL is computed on AVAILABLE carbohydrate (total carb minus fibre).
+//   - Rovner 2009 (J Am Diet Assoc 109:303): low GI = <= 55 glucose-referenced;
+//     low-GI eating cut hyperglycaemia in children with T1D but did NOT reduce
+//     time below 70 mg/dL.
+//   - Quarta 2023 (Nutrients 15:3507): macronutrients shift the postprandial
+//     curve differently, so high-fat plates get a delayed-rise warning.
+//   - Zafar 2019 (Am J Clin Nutr): low-GI diets improved HbA1c and fasting
+//     glucose but had NO effect on insulin requirements - never dose from these.
+//   - Vega-Lopez 2018 / Brand-Miller commentary: published GI values vary
+//     between labs and individuals, so every score carries a confidence tier.
+//
+// GI bands: low <= 55, medium 56-69, high >= 70.
 // GL bands follow the standard clinical cut-offs: low <= 10, medium 11-19,
 // high >= 20.
 
 import type { Food } from "./data";
 import { INGREDIENT_INDEX } from "./ingredient-index.generated";
+import { MEASURE_INDEX } from "./measures.generated";
+import { COMPOSITION, FAT_ONLY, measureToGrams, type Composition } from "./composition";
 
 // Published GI (glucose = 100) for carbohydrate-bearing foods.
 // Ingredients not listed here contribute negligible available carbohydrate
@@ -247,22 +264,61 @@ export const GI_TABLE: Record<string, number> = {
   "desiccated coconut": 45,
   coconut: 45,
 };
-
 // If we cannot identify any carbohydrate source, we assume a mixed refined
 // meal (GI 70). This is deliberately conservative: it predicts a faster rise
 // than most unknown dishes actually cause.
 export const DEFAULT_GI = 70;
 
-export type GlycemicResult = {
+/**
+ * Share of the meal's carbohydrate that a single high-GI source must supply
+ * before we abandon the weighted average and use that source's GI directly.
+ * A safety ceiling: it stops a rice- or sugar-dominated plate from being
+ * averaged down by low-GI side ingredients.
+ */
+const DOMINANCE_THRESHOLD = 0.4;
+
+export type Confidence = "measured" | "derived" | "estimated";
+
+export type CarbContributor = {
+  /** Normalized ingredient name as printed in the recipe. */
+  ingredient: string;
+  /** GI table key the value came from. */
+  giKey: string;
   gi: number;
+  /** Estimated grams of carbohydrate this ingredient contributes. */
+  carbGrams: number;
+  /** Fraction of the recipe's carbohydrate, 0-1. */
+  share: number;
+};
+
+export type GlycemicResult = {
+  /** Carbohydrate-weighted meal GI (Jenkins 2002 mixed-meal model). */
+  gi: number;
+  /** Glycemic load computed on available carbohydrate. */
   gl: number;
-  /** The ingredient the GI value came from, or null when estimated. */
+  /** Total carbohydrate for the serving, as stated on the recipe. */
+  carbs: number;
+  /** Estimated fibre grams for the serving. */
+  fibre: number;
+  /** carbs - fibre, the available carbohydrate GL is computed from. */
+  availableCarbs: number;
+  /** Estimated fat grams for the serving; drives the delayed-rise flag. */
+  fat: number;
+  /** True when fat is high enough to delay and prolong the rise. */
+  delayedRise: boolean;
+  /** The largest carbohydrate contributor, or null when none was identified. */
   source: string | null;
-  /** false when no carbohydrate source could be identified in the recipe. */
+  /** True when the weighted average was overridden by a dominant high-GI source. */
+  dominated: boolean;
+  /** How well grounded the number is. */
+  confidence: Confidence;
+  /** Every identified carbohydrate source, largest share first. */
+  contributors: CarbContributor[];
+  /** Kept for older callers: false when nothing could be identified. */
   verified: boolean;
 };
 
-function lookupGI(ingredient: string): { gi: number; key: string } | null {
+export function lookupGI(ingredient: string): { gi: number; key: string } | null {
   // The ingredient index is naively singularized ("couscous" -> "couscou"),
   // so test both forms.
   const base = ingredient.toLowerCase().trim();
@@ -282,20 +338,150 @@ function lookupGI(ingredient: string): { gi: number; key: string } | null {
   return best;
 }
 
+function lookupComposition(ingredient: string, giKey: string | null): Composition | null {
+  const base = ingredient.toLowerCase().trim();
+  if (COMPOSITION[base]) return COMPOSITION[base];
+  if (COMPOSITION[base + "s"]) return COMPOSITION[base + "s"];
+  if (giKey && COMPOSITION[giKey]) return COMPOSITION[giKey];
+  let best: { key: string; comp: Composition } | null = null;
+  for (const key of Object.keys(COMPOSITION)) {
+    const re = new RegExp(`(^|\\s)${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(s)?($|\\s)`);
+    if (re.test(base) || re.test(base + "s")) {
+      if (!best || key.length > best.key.length) best = { key, comp: COMPOSITION[key] };
+    }
+  }
+  return best ? best.comp : null;
+}
+
+function lookupFat(ingredient: string): number | null {
+  const base = ingredient.toLowerCase().trim();
+  if (FAT_ONLY[base] !== undefined) return FAT_ONLY[base];
+  let best: { key: string; fat: number } | null = null;
+  for (const key of Object.keys(FAT_ONLY)) {
+    const re = new RegExp(`(^|\\s)${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(s)?($|\\s)`);
+    if (re.test(base)) {
+      if (!best || key.length > best.key.length) best = { key, fat: FAT_ONLY[key] };
+    }
+  }
+  return best ? best.fat : null;
+}
+
 /**
- * Highest published GI among the recipe's identifiable carbohydrate sources.
- * Highest (not average) so the rating never under-predicts a spike.
+ * Evidence-based glycemic profile for a plated recipe.
+ *
+ * Jenkins 2002: a mixed meal's GI is the carbohydrate-weighted average of its
+ * carbohydrate sources, applied to *available* carbohydrate (total carb minus
+ * fibre). Quarta 2023: fat and protein shift the postprandial curve, so a
+ * high-fat, high-carb plate needs its own warning rather than a lower score.
  */
 export function glycemicForRecipe(food: Food): GlycemicResult {
-  const ings = INGREDIENT_INDEX[food.id] ?? [];
-  let top: { gi: number; key: string } | null = null;
-  for (const ing of ings) {
-    const hit = lookupGI(ing);
-    if (hit && (!top || hit.gi > top.gi)) top = hit;
+  const measured = MEASURE_INDEX[food.id] ?? [];
+  const names = measured.length
+    ? measured
+    : (INGREDIENT_INDEX[food.id] ?? []).map((name) => ({ name, measure: "" }));
+
+  let rawCarb = 0;
+  let rawFibre = 0;
+  let rawFat = 0;
+  const raw: { ingredient: string; giKey: string; gi: number; carbGrams: number; exact: boolean }[] = [];
+
+  for (const { name, measure } of names) {
+    const grams = measureToGrams(measure, name);
+    const hit = lookupGI(name);
+    const comp = lookupComposition(name, hit ? hit.key : null);
+
+    if (comp) {
+      // Without a usable measure, assume a modest 100 g so the ingredient still
+      // counts toward the weighting instead of vanishing.
+      const g = grams ?? 100;
+      const carbGrams = (g * comp.carb) / 100;
+      rawFibre += (g * comp.fibre) / 100;
+      rawFat += (g * comp.fat) / 100;
+      if (hit && carbGrams > 0.5) {
+        rawCarb += carbGrams;
+        raw.push({
+          ingredient: name,
+          giKey: hit.key,
+          gi: hit.gi,
+          carbGrams,
+          exact: GI_TABLE[name.toLowerCase().trim()] !== undefined,
+        });
+      }
+    }
+
+    const fatPct = lookupFat(name);
+    if (fatPct !== null) rawFat += ((grams ?? 30) * fatPct) / 100;
   }
-  const gi = top ? top.gi : DEFAULT_GI;
-  const gl = Math.round((gi * food.carbs) / 100);
-  return { gi, gl, source: top ? top.key : null, verified: Boolean(top) };
+
+  if (rawCarb <= 0) {
+    const availableCarbs = food.carbs;
+    const gl = Math.round((DEFAULT_GI * availableCarbs) / 100);
+    return {
+      gi: DEFAULT_GI,
+      gl,
+      carbs: food.carbs,
+      fibre: 0,
+      availableCarbs,
+      fat: 0,
+      delayedRise: false,
+      source: null,
+      dominated: false,
+      confidence: "estimated",
+      contributors: [],
+      verified: false,
+    };
+  }
+
+  const contributors: CarbContributor[] = raw
+    .map((c) => ({
+      ingredient: c.ingredient,
+      giKey: c.giKey,
+      gi: c.gi,
+      carbGrams: Math.round((c.carbGrams / rawCarb) * food.carbs * 10) / 10,
+      share: c.carbGrams / rawCarb,
+    }))
+    .sort((a, b) => b.share - a.share);
+
+  const weightedGI = Math.round(
+    raw.reduce((sum, c) => sum + c.gi * c.carbGrams, 0) / rawCarb,
+  );
+
+  // Safety ceiling: a dominant high-GI source sets the meal GI on its own.
+  const highest = raw.reduce((a, b) => (b.gi > a.gi ? b : a));
+  const highestShare = highest.carbGrams / rawCarb;
+  const dominated = highestShare >= DOMINANCE_THRESHOLD && highest.gi > weightedGI;
+  const gi = dominated ? highest.gi : weightedGI;
+
+  // Scale fibre and fat to the stated serving using the carbohydrate ratio, so
+  // they stay consistent with the per-serving carb figure the app shows.
+  const scale = food.carbs / rawCarb;
+  const fibre = Math.min(Math.round(rawFibre * scale), Math.round(food.carbs * 0.5));
+  const fat = Math.round(rawFat * scale);
+  const availableCarbs = Math.max(food.carbs - fibre, 0);
+  const gl = Math.round((gi * availableCarbs) / 100);
+
+  const top = contributors[0];
+  const confidence: Confidence =
+    top && top.share >= 0.5 && raw.find((r) => r.giKey === top.giKey)?.exact
+      ? "measured"
+      : "derived";
+
+  return {
+    gi,
+    gl,
+    carbs: food.carbs,
+    fibre,
+    availableCarbs,
+    fat,
+    // High fat alongside meaningful carbohydrate blunts the early rise and
+    // pushes it later (Jenkins 2002; Quarta 2023).
+    delayedRise: fat >= 25 && food.carbs >= 30,
+    source: dominated ? highest.giKey : (top?.giKey ?? null),
+    dominated,
+    confidence,
+    contributors,
+    verified: true,
+  };
 }
 
 /**
@@ -320,4 +506,31 @@ export function glBand(gl: number): "Low" | "Medium" | "High" {
   if (gl <= 10) return "Low";
   if (gl <= 19) return "Medium";
   return "High";
+}
+
+/**
+ * GI category using the glucose-referenced cut-offs Rovner 2009 used to build
+ * its low-GI arm, and that Jenkins 2002 describes: low <=55, medium 56-69,
+ * high >=70.
+ */
+export function giBand(gi: number): "Low" | "Medium" | "High" {
+  if (gi <= 55) return "Low";
+  if (gi <= 69) return "Medium";
+  return "High";
+}
+
+export function confidenceLabel(c: Confidence): string {
+  if (c === "measured") return "Measured";
+  if (c === "derived") return "Derived";
+  return "Estimated";
+}
+
+export function confidenceExplanation(c: Confidence): string {
+  if (c === "measured") {
+    return "The dominant carbohydrate in this recipe has a directly published, glucose-referenced GI value.";
+  }
+  if (c === "derived") {
+    return "No single ingredient dominates, so the GI is a carbohydrate-weighted average of several published values.";
+  }
+  return "No carbohydrate source in this recipe could be matched to a published GI, so a conservative mixed-refined-meal value is assumed. Treat this number with extra caution.";
 }

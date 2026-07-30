@@ -36,16 +36,36 @@ export async function findMealForFood(input: {
       const pick = meals[Math.floor(meals.length / 3) % meals.length];
       return await lookupMeal(pick.idMeal);
     }
-    const res = await fetch(
-      `${BASE}/search.php?s=${encodeURIComponent(input.term)}`,
-    ).then((r) => r.json());
-    const meals: Record<string, string>[] | null = res?.meals ?? null;
-    if (!meals || meals.length === 0) return null;
-    return normalize(meals[0]);
+    // TheMealDB's name search fails on "&" and other punctuation, so try a
+    // few progressively looser variants of the title.
+    for (const term of nameVariants(input.term)) {
+      const res = await fetch(
+        `${BASE}/search.php?s=${encodeURIComponent(term)}`,
+      ).then((r) => r.json());
+      const meals: Record<string, string>[] | null = res?.meals ?? null;
+      if (meals && meals.length > 0) return normalize(meals[0]);
+    }
+    return null;
   } catch {
     return null;
   }
 }
+
+function nameVariants(term: string): string[] {
+  const variants = [term];
+  if (term.includes("&")) {
+    variants.push(term.replace(/&/g, "and"));
+    // Longest word-ish half before the "&" is usually the distinctive one
+    const head = term.split("&")[0].trim();
+    if (head.length > 3) variants.push(head);
+  }
+  const stripped = term.replace(/[^\w\s]/g, " ").replace(/\s+/g, " ").trim();
+  if (stripped && stripped !== term) variants.push(stripped);
+  const firstTwo = stripped.split(" ").slice(0, 2).join(" ");
+  if (firstTwo.length > 3) variants.push(firstTwo);
+  return Array.from(new Set(variants));
+}
+
 
 async function lookupMeal(id: string): Promise<Meal | null> {
   const res = await fetch(`${BASE}/lookup.php?i=${id}`).then((r) => r.json());
