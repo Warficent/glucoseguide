@@ -2,7 +2,7 @@ export type Food = {
   id: string;
   name: string;
   carbs: number;
-  impact: number; // 1 raises BG most, 10 raises BG least
+  impact: number; // 10 raises BG most, 1 raises BG least
   note: string;
   emoji: string;
   // TheMealDB search term used to fetch the linked recipe.
@@ -2262,7 +2262,7 @@ export function suggestFoods(
   const z = zoneFor(mgdl);
   let pool: Food[];
   if (z === "severe-low" || z === "low") {
-    pool = [...FOODS].sort((a, b) => a.impact - b.impact);
+    pool = [...FOODS].sort((a, b) => b.impact - a.impact);
   } else if (z === "high" || z === "severe-high") {
     // When already high, sorting by impact alone can still surface sugary,
     // high-GI dishes that merely happen to be small. Gate on the glycemic
@@ -2276,7 +2276,7 @@ export function suggestFoods(
       .sort((a, b) => a.g.gl - b.g.gl || a.g.gi - b.g.gi)
       .map((s) => s.f);
   } else {
-    pool = FOODS.filter((f) => f.impact >= 4 && f.impact <= 8);
+    pool = FOODS.filter((f) => f.impact >= 3 && f.impact <= 7);
   }
   if (ease) {
     const filtered = pool.filter((f) => easeLabel(f.id) === ease);
