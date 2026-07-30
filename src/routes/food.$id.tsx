@@ -9,14 +9,13 @@ import { ArrowLeft, Heart, ExternalLink, ChefHat, Youtube } from "lucide-react";
 import { isYoutubePlayable } from "@/lib/youtube-blocklist.generated";
 import {
   glycemicForRecipe,
-  glBand,
-  giBand,
   confidenceLabel,
   confidenceExplanation,
   scaleGlycemic,
   impactFromGL,
   type GlycemicResult,
 } from "@/lib/glycemic";
+
 
 export const Route = createFileRoute("/food/$id")({
   head: ({ params }) => {
