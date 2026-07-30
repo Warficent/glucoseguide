@@ -13,7 +13,7 @@ import {
   type EaseLevel,
 } from "@/lib/data";
 
-import { glycemicForRecipe, giBand } from "@/lib/glycemic";
+import { glycemicForRecipe } from "@/lib/glycemic";
 import { Heart, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/suggest")({
@@ -133,9 +133,10 @@ function SuggestPage() {
                           )}
                         </div>
                         <p className="text-xs text-ink/60">
-                          {f.carbs}g carbs · impact {f.impact}/10 · GI {g.gi} ({giBand(g.gi)})
+                          {f.carbs}g carbs · impact {f.impact}/10
                           {easeLabel(f.id) ? ` · ${easeLabel(f.id)} to make` : ""}
                         </p>
+
                         <div className="mt-1 flex flex-wrap gap-1.5">
                           {g.delayedRise && (
                             <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
