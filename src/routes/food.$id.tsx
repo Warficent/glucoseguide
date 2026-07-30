@@ -259,11 +259,20 @@ function GlycemicCard({
       </div>
       <p className="mt-1 text-xs text-ink/50">For {portionLabel(portion).toLowerCase()}</p>
 
-      <dl className="mt-3 grid grid-cols-4 gap-2 text-center">
+      <dl className="mt-3 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-xl bg-white p-3">
-          <dt className="text-[10px] uppercase tracking-wider text-ink/50">GI</dt>
-          <dd className="font-serif text-2xl font-semibold text-ink tabular-nums">{g.gi}</dd>
-          <dd className="text-[10px] text-ink/50">{giBand(g.gi)}</dd>
+          <dt className="text-[10px] uppercase tracking-wider text-ink/50">Total carb</dt>
+          <dd className="font-serif text-2xl font-semibold text-ink tabular-nums">
+            {g.carbs}
+          </dd>
+          <dd className="text-[10px] text-ink/50">grams</dd>
+        </div>
+        <div className="rounded-xl bg-white p-3">
+          <dt className="text-[10px] uppercase tracking-wider text-ink/50">Fibre</dt>
+          <dd className="font-serif text-2xl font-semibold text-ink tabular-nums">
+            {g.fibre}
+          </dd>
+          <dd className="text-[10px] text-ink/50">grams</dd>
         </div>
         <div className="rounded-xl bg-white p-3">
           <dt className="text-[10px] uppercase tracking-wider text-ink/50">Avail. carb</dt>
@@ -272,24 +281,13 @@ function GlycemicCard({
           </dd>
           <dd className="text-[10px] text-ink/50">grams</dd>
         </div>
-        <div className="rounded-xl bg-white p-3">
-          <dt className="text-[10px] uppercase tracking-wider text-ink/50">GL</dt>
-          <dd className="font-serif text-2xl font-semibold text-ink tabular-nums">{g.gl}</dd>
-          <dd className="text-[10px] text-ink/50">load</dd>
-        </div>
-        <div className="rounded-xl bg-white p-3">
-          <dt className="text-[10px] uppercase tracking-wider text-ink/50">Band</dt>
-          <dd className="font-serif text-lg font-semibold leading-8 text-primary">{glBand(g.gl)}</dd>
-          <dd className="text-[10px] text-ink/50">GL band</dd>
-        </div>
       </dl>
 
       {g.delayedRise && (
         <p className="mt-3 rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900">
           <strong className="font-semibold">Delayed rise.</strong> This plate carries
           roughly {g.fat}g of fat alongside its carbohydrate. Fat blunts the early rise
-          and pushes it later, so glucose can climb hours after eating — the GI number
-          understates that pattern.
+          and pushes it later, so glucose can climb hours after eating.
         </p>
       )}
 
@@ -300,21 +298,20 @@ function GlycemicCard({
               {g.dominated ? (
                 <>
                   <strong className="font-semibold text-ink/80">{g.source}</strong> supplies
-                  most of this recipe's carbohydrate and has the highest published GI, so
-                  its value of {g.gi} sets the meal GI rather than the weighted average.
+                  most of this recipe's carbohydrate and is the fastest-acting source in
+                  it, so it sets the pace of the rise.
                 </>
               ) : (
                 <>
-                  Meal GI {g.gi} is the carbohydrate-weighted average of this recipe's
-                  published, glucose-referenced GI values, led by{" "}
+                  The impact score is weighted across this recipe's published
+                  carbohydrate sources, led by{" "}
                   <strong className="font-semibold text-ink/80">{g.source}</strong>.
                 </>
               )}
             </p>
             <p>
-              Glycemic load = GI {g.gi} × available carbohydrate {g.availableCarbs}g ÷ 100 ={" "}
-              {g.gl}. Available carbohydrate is {g.carbs}g total carbs minus about{" "}
-              {g.fibre}g fibre
+              Available carbohydrate is {g.carbs}g total carbs minus about {g.fibre}g
+              fibre
               {portion !== 1 ? `, at ${portionLabel(portion).toLowerCase()}` : ""}.
             </p>
             {g.contributors.length > 1 && (
@@ -322,7 +319,7 @@ function GlycemicCard({
                 Carbohydrate comes mainly from{" "}
                 {g.contributors
                   .slice(0, 3)
-                  .map((c) => `${c.giKey} (GI ${c.gi}, ~${Math.round(c.share * 100)}%)`)
+                  .map((c) => `${c.giKey} (~${Math.round(c.share * 100)}%)`)
                   .join(", ")}
                 .
               </p>
@@ -332,6 +329,7 @@ function GlycemicCard({
           <p>{confidenceExplanation(g.confidence)}</p>
         )}
       </div>
+
 
       <p className="mt-3 rounded-xl bg-white/70 p-3 text-xs leading-relaxed text-ink/70">
         Ratings are population averages for a typical portion, and published GI values
