@@ -279,7 +279,7 @@ function GlycemicCard({
         </div>
         <div className="rounded-xl bg-white p-3">
           <dt className="text-[10px] uppercase tracking-wider text-ink/50">Band</dt>
-          <dd className="font-serif text-2xl font-semibold text-primary">{glBand(g.gl)}</dd>
+          <dd className="font-serif text-lg font-semibold leading-8 text-primary">{glBand(g.gl)}</dd>
           <dd className="text-[10px] text-ink/50">GL band</dd>
         </div>
       </dl>
