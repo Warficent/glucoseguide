@@ -4,8 +4,15 @@ import { AppShell } from "@/components/AppShell";
 import { EmergencyBanner } from "@/components/EmergencyBanner";
 import { EaseFilter } from "@/components/EaseFilter";
 import { useAppState } from "@/lib/store";
-import { suggestFoods, zoneFor, zoneLabel, zoneColor, easeLabel   type EaseLevel,
+import {
+  suggestFoods,
+  zoneFor,
+  zoneLabel,
+  zoneColor,
+  easeLabel,
+  type EaseLevel,
 } from "@/lib/data";
+
 import { Heart, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/suggest")({
