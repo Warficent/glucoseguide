@@ -2217,6 +2217,22 @@ export function ingredientsForFood(id: string): string[] {
   return INGREDIENT_INDEX[id] ?? [];
 }
 
+// Ease of making a recipe, approximated by how many ingredients it needs.
+// Lower is easier. Unknown recipes sort last.
+export function easeForFood(id: string): number {
+  const n = ingredientsForFood(id).length;
+  return n === 0 ? 99 : n;
+}
+
+export function easeLabel(id: string): string | undefined {
+  const n = ingredientsForFood(id).length;
+  if (n === 0) return undefined;
+  if (n <= 6) return "Easy";
+  if (n <= 10) return "Medium";
+  return "Involved";
+}
+
+
 // Fuzzy match: an ingredient in the recipe counts as "have" if any selected
 // pantry item is a substring match (either direction). Handles "tomato" vs
 // "cherry tomato", "chicken" vs "chicken breast", etc.
