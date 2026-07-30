@@ -101,7 +101,10 @@ export const GI_TABLE: Record<string, number> = {
   "puff pastry": 59,
   "shortcrust pastry": 59,
   "filo pastry": 59,
+  "phyllo dough": 59,
+  "filo dough": 59,
   pastry: 59,
+
   "digestive biscuit": 62,
   biscuit: 62,
   "sponge cake": 46,
@@ -149,9 +152,13 @@ export const GI_TABLE: Record<string, number> = {
   "porridge oat": 55,
   polenta: 68,
   cornmeal: 68,
+  grits: 69,
+  grit: 69,
+  hominy: 69,
   "corn kernel": 52,
   sweetcorn: 52,
   corn: 52,
+
 
   // Starchy vegetables and legumes
   potato: 78,
