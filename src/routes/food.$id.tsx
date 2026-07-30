@@ -6,6 +6,7 @@ import { FOODS } from "@/lib/data";
 import { useAppState, actions } from "@/lib/store";
 import { findMealForFood, splitInstructions, type Meal } from "@/lib/mealdb";
 import { ArrowLeft, Heart, ExternalLink, ChefHat, Youtube } from "lucide-react";
+import { isYoutubePlayable } from "@/lib/youtube-blocklist.generated";
 
 export const Route = createFileRoute("/food/$id")({
   head: ({ params }) => {
@@ -233,7 +234,7 @@ function Recipe({ meal }: { meal: Meal }) {
             Source <ExternalLink className="h-3 w-3" />
           </a>
         )}
-        {meal.strYoutube && (
+        {isYoutubePlayable(meal.strYoutube) && (
           <a
             href={meal.strYoutube}
             target="_blank"
