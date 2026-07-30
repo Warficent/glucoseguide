@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ImpactScale } from "@/components/ImpactScale";
 import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { EmergencyBanner } from "@/components/EmergencyBanner";
@@ -158,6 +159,8 @@ function SuggestPage() {
             </ul>
           </>
         )}
+
+        <ImpactScale />
 
         <p className="rounded-2xl bg-lavender p-4 text-xs leading-relaxed text-ink/60">
           Impact scores are computed from published, glucose-referenced glycemic index
