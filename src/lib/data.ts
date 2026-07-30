@@ -2250,11 +2250,16 @@ export function filterFoodsByIngredients(
   mode: IngredientMode,
 ): IngredientMatch[] {
   if (selected.length === 0) {
-    return foods.map((f) => {
-      const total = ingredientsForFood(f.id).length;
-      return { food: f, matched: 0, total };
-    });
+    return foods
+      .map((f) => ({ food: f, matched: 0, total: ingredientsForFood(f.id).length }))
+      .sort((a, b) => {
+        const ea = easeForFood(a.food.id);
+        const eb = easeForFood(b.food.id);
+        if (ea !== eb) return ea - eb;
+        return a.food.name.localeCompare(b.food.name);
+      });
   }
+
   const pantry = new Set(selected.map((s) => s.toLowerCase().trim()));
   const results: IngredientMatch[] = [];
   for (const food of foods) {
