@@ -1,59 +1,61 @@
-## SuperCook-style ingredient filter
+## Goal
 
-Let users pick ingredients they have, then narrow the food list to recipes that either **only** use those ingredients or **contain some** of them.
+Re-ground the impact scores in this full evidence set, and make the app show which evidence produced each number.
 
-### Where it lives
+## What the sources actually support
 
-New surface on the **Select** screen (`src/routes/select.tsx`), above the search bar:
+Verified from the sources this turn:
 
-- A collapsible "What's in your kitchen?" panel with a searchable, tag-style ingredient picker.
-- Selected ingredients render as removable chips.
-- Two-mode toggle: **Any of these** (recipe includes ≥1 selected ingredient) / **Only these** (recipe uses a subset of selected ingredients).
-- "Clear" button to reset.
+- **Rovner 2009** (J Am Diet Assoc 109:303-307) — 23 children with T1D, CGM crossover. Low-GI day (mean diet GI 34) vs usual day (GI 57): mean daytime glucose 125 vs 186 mg/dL, area above 180 mg/dL 4,485 vs 26,708, high-BG index 5.1 vs 13.6. **No reduction in time below 70 mg/dL** (area below 70 was numerically higher on the low-GI day), and **no nighttime difference**. Used low GI = **≤55, glucose-referenced**; fiber 24.5 g vs 14.5 g.
+- **Jenkins 2002** (AJCN 76:266S) — GI defined against a glucose reference; mixed-meal GI is the **carbohydrate-weighted average** of the meal's carb sources, applied to **available** carbohydrate; fat and protein blunt the early rise and delay it.
+- **Zafar 2019** (AJCN, 54 RCTs incl. T1D) — low-GI diets reduced HbA1c and fasting glucose; **no effect on insulin requirements**. GI is a ranking tool, not a dosing tool.
+- **Ojo 2018** (Nutrients 10:373) — note: the published paper is **type 2 diabetes only**, not T1D as listed. It supports low-GI diets improving HbA1c/fasting glucose, but it will be cited accurately as T2D evidence, not extended to T1D.
+- **Quarta 2023** (Nutrients 15:3507) — T1D children specifically: GI and GL assess quality and quantity together, and **each macronutrient shifts postprandial glucose differently**, so fat and protein must be considered alongside carbs. This is the direct justification for a delayed-rise flag.
+- **Vega-López 2018**, **Brand-Miller commentary**, **Powers 2018**, **Williston 2019**, **Chiang 2014 (ADA position)**, **LPI review**, **Beyond Type 1** — collectively: GI values carry real measurement variability between individuals and labs, GI is an **adjunct to carbohydrate counting and never a replacement**, and ADA guidance keeps carb counting plus insulin matching as the primary tool. These set the app's framing and its limits section rather than the math.
 
-The existing text search and Recently Viewed still work; ingredient filter composes with them.
+Three things in `src/lib/glycemic.ts` conflict with the above.
 
-Each food row gets a small "3 of 5 ingredients matched" hint when a filter is active.
+## Technical changes
 
-### Where the ingredient data comes from
+**1. Meal GI: carbohydrate-weighted, not worst-ingredient (Jenkins, Quarta)**
 
-Ingredients today are fetched per-recipe from TheMealDB on the food detail page — there is no local ingredient index. For a fast, offline-capable filter across all 131 recipes we prebuild one:
+`glycemicForRecipe` currently takes the single highest-GI ingredient. Replace with the additive mixed-meal model:
 
-- Add `scripts/build-ingredient-index.ts` — a one-time Node script that walks `FOODS`, calls `findMealForFood` for each, and writes a normalized index to `src/lib/ingredient-index.generated.ts`.
-- Shape: `{ [foodId]: string[] }` of lowercased, singularized ingredient names (e.g. `"tomatoes"` → `"tomato"`), plus a sorted union `ALL_INGREDIENTS: string[]` for the picker.
-- Committed to the repo so the app ships with zero extra API calls. Re-run the script whenever `FOODS` changes.
+- Add a `CARB_PER_100G` table beside `GI_TABLE` and estimate each matched ingredient's carb contribution from its parsed measure.
+- Meal GI = Σ(GI_i × carb_i) / Σ(carb_i), rescaled so Σcarb_i matches the recipe's stated carbs.
+- Safety ceiling: if the highest-GI source supplies ≥40% of the carbs, use that ingredient's GI instead of the average.
+- Show both the weighted meal GI and the dominant source on the detail card.
 
-### Filtering logic
+**2. Available carbohydrate = total carb − fiber (Jenkins; fiber was the main dietary difference in Rovner)**
 
-New helpers in `src/lib/data.ts` (kept next to `suggestFoods`):
+Estimate fiber per recipe from the same table and compute `GL = mealGI × (carbs − fiber) / 100`, the published GL definition.
 
-- `filterFoodsByIngredients(foods, selected, mode)` where `mode: "any" | "only"`.
-- `"any"`: keep foods whose ingredient set intersects `selected` (sort by match count desc, then name).
-- `"only"`: keep foods whose ingredient set is a subset of `selected` (a "you can cook this right now" list).
-- Case/whitespace-insensitive comparison against the generated index.
+**3. GI category labels use the ≤55 / 56-69 / ≥70 cut-offs (Rovner, Jenkins)**
 
-### State
+Display the GI band next to the number, since ≤55 is the exact threshold Rovner used to build the low-GI arm. GL bands (≤10 / 11-19 / ≥20) stay for the load.
 
-Selected ingredients + mode live in URL search params on `/select` so the filter is shareable and survives reloads:
+**4. Delayed-rise flag (Jenkins, Quarta)**
 
-- `ingredients: string[]` and `mode: "any" | "only"` validated with `zodValidator` + `fallback` per the search-params guidance.
-- Read via `Route.useSearch()`; update via `navigate({ search: prev => ... })`.
+Recipes that are high fat + high carb (pizza, fries, creamy pasta) show a blunted early rise and a prolonged late climb that GI does not capture. Flag on the detail card and in Suggest: "GI understates this meal — fat delays the rise, expect a later climb."
 
-Liked/recent state stays in the existing store.
+**5. Uncertainty band instead of a false-precision single number (Vega-López, Brand-Miller)**
 
-### Ingredient picker UX
+Published GI values vary substantially between labs and individuals. Each recipe will carry a `confidence` field — `measured` (dominant carb source directly in the GI table), `derived` (weighted from multiple matched sources), or `estimated` (no match, current 47-of-232 fallback) — rendered as a visible label so the user can tell a solid number from a guess.
 
-- Text input filters `ALL_INGREDIENTS` as you type; Enter or tap adds a chip.
-- Common categories (Produce, Dairy, Pantry, Protein) as quick-add chip rows above the input — categories derived heuristically in the build script from a small keyword map.
-- Empty state when a filter yields nothing: "No recipes match. Try switching to Any of these."
+**6. Fix the low-glucose path — the safety-critical change**
 
-### Files touched
+Rovner found low-GI eating did not reduce hypoglycemia, and no source in this set supports ranking recipes by "fastest rise" to treat a low. For the low and severe-low zones, Suggest will lead with the standard **15-15 rule** (15 g fast-acting carbohydrate — glucose tabs, juice, regular soda — recheck in 15 min) and demote recipes to "after you have recovered". Emergency banner logic unchanged.
 
-- New: `scripts/build-ingredient-index.ts`, `src/lib/ingredient-index.generated.ts`, `src/components/IngredientPicker.tsx`.
-- Edited: `src/routes/select.tsx` (integrate picker + filter), `src/lib/data.ts` (add filter helpers), `package.json` (script entry).
+**7. Evidence surfacing**
 
-### Not in scope
+- New `/evidence` route: the scoring method in full, provenance of the GI and carb tables, every citation above with a link and its specific finding, and the limits — GI values are population averages measured fasted on isolated foods; Zafar found no effect on insulin requirements; ADA (Chiang 2014) keeps carbohydrate counting primary, so GI here is an adjunct only.
+- The Glycemic detail card links to `/evidence` and names the evidence behind its band.
+- Suggest and Select disclaimers rewritten to cite this evidence base and state plainly that the app is not a dosing tool.
 
-- No changes to Suggest, Move, Home, Scan, or Food Detail.
-- No server-side persistence of the pantry (URL-only for now; can promote to store later if you want it to persist across pages).
-- No new recipes; filter operates over the existing 131.
+**8. Recompute and verify**
+
+Re-run the scoring script across all 232 recipes, write updated `impact` values into `src/lib/data.ts`, and report how many changed and how many remain in the `estimated` confidence tier.
+
+## What this will not do
+
+None of these papers publish GI values for the specific TheMealDB dishes — GI numbers still come from the International Tables (Foster-Powell/Brand-Miller) and the Sydney database. The papers govern how those numbers are combined, bounded, and presented. Per-serving carb figures remain my estimates until replaced with USDA FoodData Central values.

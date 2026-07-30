@@ -167,10 +167,15 @@ function SelectPage() {
         </section>
 
         <p className="rounded-2xl bg-lavender p-4 text-xs leading-relaxed text-ink/60">
-          Impact scores are derived from published glycemic index values and each
-          recipe's carbohydrate load. They are a guide only — not medical advice, and
-          never a basis for insulin dosing. Confirm carbs with your care team.
+          Impact scores are computed from published, glucose-referenced glycemic index
+          values combined across each recipe's carbohydrate sources and scaled by its
+          available carbohydrate. A guide only — not medical advice, and never a basis for
+          insulin dosing.{" "}
+          <Link to="/evidence" className="font-semibold text-primary underline">
+            See the research behind these scores
+          </Link>
         </p>
+
       </div>
     </AppShell>
   );

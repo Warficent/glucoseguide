@@ -7,7 +7,13 @@ import { useAppState, actions } from "@/lib/store";
 import { findMealForFood, splitInstructions, type Meal } from "@/lib/mealdb";
 import { ArrowLeft, Heart, ExternalLink, ChefHat, Youtube } from "lucide-react";
 import { isYoutubePlayable } from "@/lib/youtube-blocklist.generated";
-import { glycemicForRecipe, glBand } from "@/lib/glycemic";
+import {
+  glycemicForRecipe,
+  glBand,
+  giBand,
+  confidenceLabel,
+  confidenceExplanation,
+} from "@/lib/glycemic";
 
 export const Route = createFileRoute("/food/$id")({
   head: ({ params }) => {
@@ -139,48 +145,110 @@ function FoodDetail() {
 
 function GlycemicCard({ food }: { food: (typeof FOODS)[number] }) {
   const g = glycemicForRecipe(food);
+  const tone =
+    g.confidence === "measured"
+      ? "bg-primary/10 text-primary"
+      : g.confidence === "derived"
+        ? "bg-ink/10 text-ink/70"
+        : "bg-amber-100 text-amber-800";
+
   return (
     <section className="rounded-2xl bg-lavender p-5">
-      <h2 className="font-serif text-lg font-semibold text-ink">Glycemic detail</h2>
-      <dl className="mt-3 grid grid-cols-3 gap-3 text-center">
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="font-serif text-lg font-semibold text-ink">Glycemic detail</h2>
+        <span
+          className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider ${tone}`}
+        >
+          {confidenceLabel(g.confidence)}
+        </span>
+      </div>
+
+      <dl className="mt-3 grid grid-cols-4 gap-2 text-center">
         <div className="rounded-xl bg-white p-3">
           <dt className="text-[10px] uppercase tracking-wider text-ink/50">GI</dt>
           <dd className="font-serif text-2xl font-semibold text-ink tabular-nums">{g.gi}</dd>
+          <dd className="text-[10px] text-ink/50">{giBand(g.gi)}</dd>
+        </div>
+        <div className="rounded-xl bg-white p-3">
+          <dt className="text-[10px] uppercase tracking-wider text-ink/50">Avail. carb</dt>
+          <dd className="font-serif text-2xl font-semibold text-ink tabular-nums">
+            {g.availableCarbs}
+          </dd>
+          <dd className="text-[10px] text-ink/50">grams</dd>
         </div>
         <div className="rounded-xl bg-white p-3">
           <dt className="text-[10px] uppercase tracking-wider text-ink/50">GL</dt>
           <dd className="font-serif text-2xl font-semibold text-ink tabular-nums">{g.gl}</dd>
+          <dd className="text-[10px] text-ink/50">load</dd>
         </div>
         <div className="rounded-xl bg-white p-3">
-          <dt className="text-[10px] uppercase tracking-wider text-ink/50">Load</dt>
+          <dt className="text-[10px] uppercase tracking-wider text-ink/50">Band</dt>
           <dd className="font-serif text-2xl font-semibold text-primary">{glBand(g.gl)}</dd>
+          <dd className="text-[10px] text-ink/50">GL band</dd>
         </div>
       </dl>
-      <p className="mt-3 text-xs leading-relaxed text-ink/60">
+
+      {g.delayedRise && (
+        <p className="mt-3 rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900">
+          <strong className="font-semibold">Delayed rise.</strong> This plate carries
+          roughly {g.fat}g of fat alongside its carbohydrate. Fat blunts the early rise
+          and pushes it later, so glucose can climb hours after eating — the GI number
+          understates that pattern.
+        </p>
+      )}
+
+      <div className="mt-3 space-y-2 text-xs leading-relaxed text-ink/60">
         {g.verified ? (
           <>
-            Glycemic index {g.gi} taken from published glucose-referenced tables for{" "}
-            <strong className="font-semibold text-ink/80">{g.source}</strong>, the
-            highest-GI carbohydrate in this recipe. Glycemic load = GI × {food.carbs}g
-            carbs ÷ 100 = {g.gl}.
+            <p>
+              {g.dominated ? (
+                <>
+                  <strong className="font-semibold text-ink/80">{g.source}</strong> supplies
+                  most of this recipe's carbohydrate and has the highest published GI, so
+                  its value of {g.gi} sets the meal GI rather than the weighted average.
+                </>
+              ) : (
+                <>
+                  Meal GI {g.gi} is the carbohydrate-weighted average of this recipe's
+                  published, glucose-referenced GI values, led by{" "}
+                  <strong className="font-semibold text-ink/80">{g.source}</strong>.
+                </>
+              )}
+            </p>
+            <p>
+              Glycemic load = GI {g.gi} × available carbohydrate {g.availableCarbs}g ÷ 100 ={" "}
+              {g.gl}. Available carbohydrate is {food.carbs}g total carbs minus about{" "}
+              {g.fibre}g fibre.
+            </p>
+            {g.contributors.length > 1 && (
+              <p>
+                Carbohydrate comes mainly from{" "}
+                {g.contributors
+                  .slice(0, 3)
+                  .map((c) => `${c.giKey} (GI ${c.gi}, ~${Math.round(c.share * 100)}%)`)
+                  .join(", ")}
+                .
+              </p>
+            )}
           </>
         ) : (
-          <>
-            No published glycemic index could be matched to this recipe's ingredients,
-            so a conservative mixed-refined-meal value of GI {g.gi} is assumed — this
-            may over- or under-state the real rise. Treat this score with extra caution.
-          </>
+          <p>{confidenceExplanation(g.confidence)}</p>
         )}
-      </p>
+      </div>
+
       <p className="mt-3 rounded-xl bg-white/70 p-3 text-xs leading-relaxed text-ink/70">
-        Ratings are population averages for a typical portion. Your own response depends
-        on portion size, insulin, activity and other factors. Always count carbs and dose
-        as directed by your care team — this app is not medical advice and must not be
-        used to make insulin decisions.
+        Ratings are population averages for a typical portion, and published GI values
+        vary between people and laboratories. Low-GI eating improves average glucose but
+        does not change insulin requirements, so this is a food-ranking guide only —
+        never a basis for dosing. Count carbs and follow your care team.{" "}
+        <Link to="/evidence" className="font-semibold text-primary underline">
+          How these scores are calculated
+        </Link>
       </p>
     </section>
   );
 }
+
 
 function RecipeSection({ food }: { food: (typeof FOODS)[number] }) {
   const { data, isLoading, isError } = useQuery({
