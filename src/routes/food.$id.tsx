@@ -72,9 +72,24 @@ export const Route = createFileRoute("/food/$id")({
   ),
 });
 
+const PORTION_STEPS = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
+
+function portionLabel(factor: number) {
+  if (factor === 1) return "1 serving";
+  if (factor === 0.5) return "Half serving";
+  if (factor === 2) return "Double serving";
+  return `${factor} servings`;
+}
+
 function FoodDetail() {
   const { food } = Route.useLoaderData();
   const liked = useAppState((s) => s.liked.includes(food.id));
+  const [stepIndex, setStepIndex] = useState(PORTION_STEPS.indexOf(1));
+  const portion = PORTION_STEPS[stepIndex];
+
+  const base = useMemo(() => glycemicForRecipe(food), [food]);
+  const scaled = useMemo(() => scaleGlycemic(base, portion), [base, portion]);
+  const impact = impactFromGL(scaled.gl);
 
   useEffect(() => {
     actions.addRecent(food.id);
@@ -114,20 +129,28 @@ function FoodDetail() {
           <div className="rounded-2xl bg-lavender p-5">
             <p className="text-xs uppercase tracking-[0.2em] text-ink/50">Carbs</p>
             <p className="mt-2 font-serif text-3xl font-semibold text-ink tabular-nums">
-              {food.carbs}
+              {scaled.carbs}
               <span className="ml-1 text-base font-medium text-ink/50">g</span>
             </p>
           </div>
           <div className="rounded-2xl bg-lavender p-5">
             <p className="text-xs uppercase tracking-[0.2em] text-ink/50">Impact</p>
             <p className="mt-2 font-serif text-3xl font-semibold text-primary tabular-nums">
-              {food.impact}
+              {impact}
               <span className="ml-1 text-base font-medium text-ink/50">/10</span>
             </p>
           </div>
         </div>
 
-        <GlycemicCard food={food} />
+        <PortionSlider
+          stepIndex={stepIndex}
+          onChange={setStepIndex}
+          portion={portion}
+          baseCarbs={base.carbs}
+          scaledCarbs={scaled.carbs}
+        />
+
+        <GlycemicCard food={food} g={scaled} portion={portion} />
 
         <div className="rounded-2xl bg-lavender p-5">
           <h2 className="font-serif text-lg font-semibold text-ink">Why this score</h2>
@@ -143,8 +166,77 @@ function FoodDetail() {
   );
 }
 
-function GlycemicCard({ food }: { food: (typeof FOODS)[number] }) {
-  const g = glycemicForRecipe(food);
+function PortionSlider({
+  stepIndex,
+  onChange,
+  portion,
+  baseCarbs,
+  scaledCarbs,
+}: {
+  stepIndex: number;
+  onChange: (i: number) => void;
+  portion: number;
+  baseCarbs: number;
+  scaledCarbs: number;
+}) {
+  return (
+    <section className="rounded-2xl bg-lavender p-5">
+      <div className="flex items-baseline justify-between gap-3">
+        <h2 className="font-serif text-lg font-semibold text-ink">Portion size</h2>
+        <p className="text-sm font-semibold text-primary tabular-nums">
+          {portionLabel(portion)}
+        </p>
+      </div>
+
+      <label className="sr-only" htmlFor="portion-slider">
+        Portion size, {portionLabel(portion)}
+      </label>
+      <input
+        id="portion-slider"
+        type="range"
+        min={0}
+        max={PORTION_STEPS.length - 1}
+        step={1}
+        value={stepIndex}
+        onChange={(e) => onChange(Number(e.target.value))}
+        aria-valuetext={portionLabel(portion)}
+        className="mt-4 h-2 w-full cursor-pointer appearance-none rounded-full bg-white accent-primary"
+      />
+      <div className="mt-2 flex justify-between text-[10px] uppercase tracking-wider text-ink/40">
+        <span>&frac14;</span>
+        <span>1 serving</span>
+        <span>3&times;</span>
+      </div>
+
+      <p className="mt-3 text-xs leading-relaxed text-ink/60">
+        One serving is the {baseCarbs}g-carb portion the recipe's published values are
+        based on. At {portionLabel(portion).toLowerCase()} that becomes about{" "}
+        <strong className="font-semibold text-ink/80">{scaledCarbs}g</strong> of
+        carbohydrate, and the glycemic load and impact score below move with it. The GI
+        itself does not change — it describes the carbohydrate, not how much is on the
+        plate.
+      </p>
+      {portion !== 1 && (
+        <button
+          onClick={() => onChange(PORTION_STEPS.indexOf(1))}
+          className="mt-3 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-primary"
+        >
+          Reset to 1 serving
+        </button>
+      )}
+    </section>
+  );
+}
+
+function GlycemicCard({
+  food,
+  g,
+  portion,
+}: {
+  food: (typeof FOODS)[number];
+  g: GlycemicResult;
+  portion: number;
+}) {
   const tone =
     g.confidence === "measured"
       ? "bg-primary/10 text-primary"
@@ -162,6 +254,7 @@ function GlycemicCard({ food }: { food: (typeof FOODS)[number] }) {
           {confidenceLabel(g.confidence)}
         </span>
       </div>
+      <p className="mt-1 text-xs text-ink/50">For {portionLabel(portion).toLowerCase()}</p>
 
       <dl className="mt-3 grid grid-cols-4 gap-2 text-center">
         <div className="rounded-xl bg-white p-3">
@@ -217,8 +310,9 @@ function GlycemicCard({ food }: { food: (typeof FOODS)[number] }) {
             </p>
             <p>
               Glycemic load = GI {g.gi} × available carbohydrate {g.availableCarbs}g ÷ 100 ={" "}
-              {g.gl}. Available carbohydrate is {food.carbs}g total carbs minus about{" "}
-              {g.fibre}g fibre.
+              {g.gl}. Available carbohydrate is {g.carbs}g total carbs minus about{" "}
+              {g.fibre}g fibre
+              {portion !== 1 ? `, at ${portionLabel(portion).toLowerCase()}` : ""}.
             </p>
             {g.contributors.length > 1 && (
               <p>
