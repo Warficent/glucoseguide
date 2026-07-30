@@ -551,6 +551,37 @@ export function glycemicForRecipe(food: Food): GlycemicResult {
 }
 
 /**
+ * Rescale a computed result to a different portion size.
+ *
+ * GI is intensive — it describes the quality of the carbohydrate, not how much
+ * of it is on the plate — so it is unchanged. Carbohydrate, fibre and fat all
+ * scale linearly with the portion, and the glycemic load is recomputed from the
+ * scaled available carbohydrate, since GL is what actually tracks the size of
+ * the rise. The delayed-rise flag is re-evaluated at the scaled fat and carb
+ * amounts, so a half portion can drop below the threshold.
+ */
+export function scaleGlycemic(result: GlycemicResult, factor: number): GlycemicResult {
+  if (factor === 1) return result;
+  const carbs = Math.round(result.carbs * factor);
+  const fibre = Math.round(result.fibre * factor);
+  const fat = Math.round(result.fat * factor);
+  const availableCarbs = Math.max(carbs - fibre, 0);
+  return {
+    ...result,
+    carbs,
+    fibre,
+    fat,
+    availableCarbs,
+    gl: Math.round((result.gi * availableCarbs) / 100),
+    delayedRise: fat >= 25 && carbs >= 30,
+    contributors: result.contributors.map((c) => ({
+      ...c,
+      carbGrams: Math.round(c.carbGrams * factor * 10) / 10,
+    })),
+  };
+}
+
+/**
  * Glycemic load -> 1-10 impact, where 1 raises glucose the most.
  * Bands are anchored on the clinical GL cut-offs (low <=10, medium 11-19,
  * high >=20) and extended above 20 for very high-load plates.
