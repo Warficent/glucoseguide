@@ -182,7 +182,7 @@ function Evidence() {
               <strong className="font-semibold text-ink">5. Map to 1-10.</strong> The impact
               score is a fixed mapping from GL, anchored on the clinical cut-offs (low 10
               or under, medium 11-19, high 20 and above) and extended above 20 for very
-              high-load plates. 1 raises glucose the most, 10 the least. There is no
+              high-load plates. 10 raises glucose the most, 1 the least. There is no
               subjective adjustment anywhere in the chain.
             </li>
           </ol>
