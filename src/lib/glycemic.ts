@@ -263,7 +263,10 @@ export type GlycemicResult = {
 };
 
 function lookupGI(ingredient: string): { gi: number; key: string } | null {
-  const ing = ingredient.toLowerCase().trim();
+  // The ingredient index is naively singularized ("couscous" -> "couscou"),
+  // so test both forms.
+  const base = ingredient.toLowerCase().trim();
+  const ing = GI_TABLE[base] === undefined && GI_TABLE[base + "s"] !== undefined ? base + "s" : base;
   if (GI_TABLE[ing] !== undefined) return { gi: GI_TABLE[ing], key: ing };
   // Otherwise match a table key that appears as whole words inside the
   // ingredient name ("basmati rice" -> "rice", "cherry tomato" -> no match).
@@ -272,7 +275,7 @@ function lookupGI(ingredient: string): { gi: number; key: string } | null {
   let best: { gi: number; key: string } | null = null;
   for (const key of Object.keys(GI_TABLE)) {
     const re = new RegExp(`(^|\\s)${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(s)?($|\\s)`);
-    if (re.test(ing)) {
+    if (re.test(ing) || re.test(ing + "s")) {
       if (!best || key.length > best.key.length) best = { gi: GI_TABLE[key], key };
     }
   }
