@@ -265,10 +265,14 @@ export type GlycemicResult = {
 function lookupGI(ingredient: string): { gi: number; key: string } | null {
   const ing = ingredient.toLowerCase().trim();
   if (GI_TABLE[ing] !== undefined) return { gi: GI_TABLE[ing], key: ing };
-  // Longest matching table key contained in (or containing) the ingredient.
+  // Otherwise match a table key that appears as whole words inside the
+  // ingredient name ("basmati rice" -> "rice", "cherry tomato" -> no match).
+  // Substring matching is deliberately word-bounded so "water" can never be
+  // read as "watermelon".
   let best: { gi: number; key: string } | null = null;
   for (const key of Object.keys(GI_TABLE)) {
-    if (ing.includes(key) || key.includes(ing)) {
+    const re = new RegExp(`(^|\\s)${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(s)?($|\\s)`);
+    if (re.test(ing)) {
       if (!best || key.length > best.key.length) best = { gi: GI_TABLE[key], key };
     }
   }
