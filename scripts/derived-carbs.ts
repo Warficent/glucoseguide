@@ -2,7 +2,8 @@ import { FOODS } from "../src/lib/data";
 import { glycemicForRecipe } from "../src/lib/glycemic";
 import { MEASURE_INDEX } from "../src/lib/measures.generated";
 import { INGREDIENT_INDEX } from "../src/lib/ingredient-index.generated";
-import { measureToGrams, lookupComposition } from "../src/lib/composition";
+import { measureToGrams } from "../src/lib/composition";
+import { lookupComposition } from "../src/lib/glycemic";
 
 for (const f of FOODS) {
   if (glycemicForRecipe(f).confidence !== "estimated") continue;

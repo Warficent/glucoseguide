@@ -345,7 +345,7 @@ export function lookupGI(ingredient: string): { gi: number; key: string } | null
   return best;
 }
 
-function lookupComposition(ingredient: string, giKey: string | null): Composition | null {
+export function lookupComposition(ingredient: string, giKey: string | null): Composition | null {
   const base = ingredient.toLowerCase().trim();
   if (COMPOSITION[base]) return COMPOSITION[base];
   if (COMPOSITION[base + "s"]) return COMPOSITION[base + "s"];
