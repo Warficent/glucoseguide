@@ -84,6 +84,8 @@ function SelectPage() {
   return (
     <AppShell title="Select">
       <div className="space-y-5">
+        <ImpactScale />
+
         <IngredientPicker
           selected={selected}
           mode={mode}
@@ -166,8 +168,6 @@ function SelectPage() {
             )}
           </ul>
         </section>
-
-        <ImpactScale />
 
         <p className="rounded-2xl bg-lavender p-4 text-xs leading-relaxed text-ink/60">
           Impact scores are computed from published, glucose-referenced glycemic index

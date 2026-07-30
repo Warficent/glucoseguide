@@ -76,6 +76,8 @@ function SuggestPage() {
   return (
     <AppShell title="Suggest">
       <div className="space-y-5">
+        <ImpactScale />
+
         <section className="rounded-3xl bg-lavender p-5">
           <div className="flex items-center justify-between">
             <div>
@@ -159,8 +161,6 @@ function SuggestPage() {
             </ul>
           </>
         )}
-
-        <ImpactScale />
 
         <p className="rounded-2xl bg-lavender p-4 text-xs leading-relaxed text-ink/60">
           Impact scores are computed from published, glucose-referenced glycemic index
