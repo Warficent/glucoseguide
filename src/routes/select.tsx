@@ -164,11 +164,13 @@ function FoodRow({
   liked,
   onLike,
   matchInfo,
+  ease,
 }: {
   food: (typeof FOODS)[number];
   liked: boolean;
   onLike: () => void;
   matchInfo?: string;
+  ease?: string;
 }) {
   return (
     <li className="flex items-center gap-3 rounded-2xl bg-lavender p-3">
@@ -181,11 +183,19 @@ function FoodRow({
           {food.emoji}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-semibold text-ink">{food.name}</p>
+          <div className="flex items-center gap-2">
+            <p className="truncate font-semibold text-ink">{food.name}</p>
+            {ease && (
+              <span className="shrink-0 rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink/60">
+                {ease}
+              </span>
+            )}
+          </div>
           <p className="text-xs text-ink/60">
             {food.carbs}g carbs{matchInfo ? ` · ${matchInfo}` : ""}
           </p>
         </div>
+
         <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary tabular-nums">
           {food.impact}/10
         </span>
