@@ -2432,7 +2432,32 @@ export const MEASURE_INDEX: Record<string, MeasuredIngredient[]> = {
       "measure": "100g"
     }
   ],
-  "quick-salt-pepper-squid": [],
+  "quick-salt-pepper-squid": [
+    {
+      "name": "squid",
+      "measure": "400g"
+    },
+    {
+      "name": "oil",
+      "measure": "3  tablespoons"
+    },
+    {
+      "name": "chinese five spice powder",
+      "measure": "1/2 teaspoon"
+    },
+    {
+      "name": "sesame seed oil",
+      "measure": "Dash"
+    },
+    {
+      "name": "coriander",
+      "measure": "Sprigs of fresh"
+    },
+    {
+      "name": "sweet chilli sauce",
+      "measure": "Drizzle"
+    }
+  ],
   "brazilian-chocolate-truffles-brigadeiro": [
     {
       "name": "unsalted butter",
@@ -2825,7 +2850,68 @@ export const MEASURE_INDEX: Record<string, MeasuredIngredient[]> = {
       "measure": "2"
     }
   ],
-  "spinach-ricotta-cannelloni": [],
+  "spinach-ricotta-cannelloni": [
+    {
+      "name": "olive oil",
+      "measure": "3 tbsp"
+    },
+    {
+      "name": "garlic",
+      "measure": "8 cloves chopped"
+    },
+    {
+      "name": "caster sugar",
+      "measure": "3 tbsp"
+    },
+    {
+      "name": "red wine vinegar",
+      "measure": "2 tblsp"
+    },
+    {
+      "name": "tomato",
+      "measure": "3 400g Cans"
+    },
+    {
+      "name": "basil leave",
+      "measure": "Bunch"
+    },
+    {
+      "name": "mascarpone",
+      "measure": "2 tubs"
+    },
+    {
+      "name": "milk",
+      "measure": "3 tbsp"
+    },
+    {
+      "name": "parmesan",
+      "measure": "85g"
+    },
+    {
+      "name": "mozzarella",
+      "measure": "2 sliced"
+    },
+    {
+      "name": "spinach",
+      "measure": "1kg"
+    },
+    {
+      "name": "parmesan",
+      "measure": "100g"
+    },
+    {
+      "name": "ricotta",
+      "measure": "3 tubs"
+    },
+    {
+      "name": "nutmeg",
+      "measure": "pinch"
+    },
+    {
+      "name": "cannellini bean",
+      "measure": "400g"
+    }
+  ],
   "chicken-and-potato-roti": [
     {
       "name": "flour",
@@ -3038,7 +3124,48 @@ export const MEASURE_INDEX: Record<string, MeasuredIngredient[]> = {
       "measure": "Dash"
     }
   ],
-  "honey-balsamic-chicken-with-crispy-broccoli-potatoes": [],
+  "honey-balsamic-chicken-with-crispy-broccoli-potatoes": [
+    {
+      "name": "potato",
+      "measure": "5"
+    },
+    {
+      "name": "broccoli",
+      "measure": "1"
+    },
+    {
+      "name": "garlic",
+      "measure": "2 cloves"
+    },
+    {
+      "name": "chicken breast",
+      "measure": "2"
+    },
+    {
+      "name": "balsamic vinegar",
+      "measure": ""
+    },
+    {
+      "name": "honey",
+      "measure": ""
+    },
+    {
+      "name": "chicken stock",
+      "measure": ""
+    },
+    {
+      "name": "butter",
+      "measure": "1 tbsp"
+    },
+    {
+      "name": "vegetable oil",
+      "measure": "1 tbsp"
+    },
+    {
+      "name": "olive oil",
+      "measure": "1 tbsp"
+    }
+  ],
   "vietnamese-chicken-salad": [
     {
       "name": "rice noodle",
@@ -4333,8 +4460,110 @@ export const MEASURE_INDEX: Record<string, MeasuredIngredient[]> = {
       "measure": "25g"
     }
   ],
-  "bigos-polish-hunter-s-stew": [],
-  "apple-blackberry-crumble": [],
+  "bigos-polish-hunter-s-stew": [
+    {
+      "name": "white cabbage",
+      "measure": "1 sliced"
+    },
+    {
+      "name": "beef stock",
+      "measure": "250ml"
+    },
+    {
+      "name": "mushroom",
+      "measure": "100g"
+    },
+    {
+      "name": "lard",
+      "measure": "2 tablespoons"
+    },
+    {
+      "name": "german sausage",
+      "measure": "400g"
+    },
+    {
+      "name": "bacon",
+      "measure": "250g"
+    },
+    {
+      "name": "onion",
+      "measure": "2 chopped"
+    },
+    {
+      "name": "beef",
+      "measure": "750g"
+    },
+    {
+      "name": "prune",
+      "measure": "200g"
+    },
+    {
+      "name": "bay leaf",
+      "measure": "1"
+    },
+    {
+      "name": "clove",
+      "measure": "2"
+    },
+    {
+      "name": "peppercorn",
+      "measure": "12"
+    },
+    {
+      "name": "juniper berry",
+      "measure": "4"
+    },
+    {
+      "name": "allspice berry",
+      "measure": "4"
+    },
+    {
+      "name": "red wine",
+      "measure": "90 ml"
+    },
+    {
+      "name": "tomato puree",
+      "measure": "2 tablespoons"
+    }
+  ],
+  "apple-blackberry-crumble": [
+    {
+      "name": "plain flour",
+      "measure": "120g"
+    },
+    {
+      "name": "caster sugar",
+      "measure": "60g"
+    },
+    {
+      "name": "butter",
+      "measure": "60g"
+    },
+    {
+      "name": "braeburn apple",
+      "measure": "300g"
+    },
+    {
+      "name": "butter",
+      "measure": "30g"
+    },
+    {
+      "name": "demerara sugar",
+      "measure": "30g"
+    },
+    {
+      "name": "blackberry",
+      "measure": "120g"
+    },
+    {
+      "name": "cinnamon",
+      "measure": "¼ teaspoon"
+    },
+    {
+      "name": "ice cream",
+      "measure": "to serve"
+    }
+  ],
   "gallo-pinto": [
     {
       "name": "black bean",
@@ -5077,7 +5306,60 @@ export const MEASURE_INDEX: Record<string, MeasuredIngredient[]> = {
       "measure": "To taste"
     }
   ],
-  "imam-bayildi-with-bbq-lamb-tzatziki": [],
+  "imam-bayildi-with-bbq-lamb-tzatziki": [
+    {
+      "name": "aubergine",
+      "measure": "3"
+    },
+    {
+      "name": "olive oil",
+      "measure": "2 tablespoons"
+    },
+    {
+      "name": "onion",
+      "measure": "1 chopped"
+    },
+    {
+      "name": "garlic",
+      "measure": "2 cloves chopped"
+    },
+    {
+      "name": "cinnamon",
+      "measure": "1 tsp"
+    },
+    {
+      "name": "tomato",
+      "measure": "8"
+    },
+    {
+      "name": "parsley",
+      "measure": "Bunch"
+    },
+    {
+      "name": "lamb loin chop",
+      "measure": "12"
+    },
+    {
+      "name": "paprika",
+      "measure": "Pinch"
+    },
+    {
+      "name": "lemon",
+      "measure": "1"
+    },
+    {
+      "name": "greek yogurt",
+      "measure": "150g"
+    },
+    {
+      "name": "cucumber",
+      "measure": "1/2"
+    },
+    {
+      "name": "mint",
+      "measure": "2 tbs chopped"
+    }
+  ],
   "chicken-enchilada-casserole": [
     {
       "name": "enchilada sauce",
@@ -5134,7 +5416,44 @@ export const MEASURE_INDEX: Record<string, MeasuredIngredient[]> = {
       "measure": "1 tablespoon"
     }
   ],
-  "jamon-wild-garlic-croquetas": [],
+  "jamon-wild-garlic-croquetas": [
+    {
+      "name": "wild garlic leave",
+      "measure": "150g"
+    },
+    {
+      "name": "milk",
+      "measure": "350g"
+    },
+    {
+      "name": "olive oil",
+      "measure": "45g"
+    },
+    {
+      "name": "flour",
+      "measure": "65g"
+    },
+    {
+      "name": "manchego",
+      "measure": "35g"
+    },
+    {
+      "name": "jam n ib rico",
+      "measure": "80g"
+    },
+    {
+      "name": "egg",
+      "measure": "1"
+    },
+    {
+      "name": "breadcrumb",
+      "measure": "75g"
+    },
+    {
+      "name": "vegetable oil",
+      "measure": "1 L"
+    }
+  ],
   "spicy-arrabiata-penne": [
     {
       "name": "penne rigate",
@@ -5315,1489 +5634,60 @@ export const MEASURE_INDEX: Record<string, MeasuredIngredient[]> = {
       "measure": "To Glaze"
     }
   ],
-  "beef-stroganoff": [
-    {
-      "name": "olive oil",
-      "measure": "1 tbls"
-    },
-    {
-      "name": "onion",
-      "measure": "1"
-    },
-    {
-      "name": "garlic",
-      "measure": "1 clove"
-    },
-    {
-      "name": "butter",
-      "measure": "1 tbsp"
-    },
-    {
-      "name": "mushroom",
-      "measure": "250g"
-    },
-    {
-      "name": "beef fillet",
-      "measure": "500g"
-    },
-    {
-      "name": "plain flour",
-      "measure": "1tbsp"
-    },
-    {
-      "name": "creme fraiche",
-      "measure": "150g"
-    },
-    {
-      "name": "english mustard",
-      "measure": "1 tbsp"
-    },
-    {
-      "name": "beef stock",
-      "measure": "100ml"
-    },
-    {
-      "name": "parsley",
-      "measure": "Topping"
-    }
-  ],
-  "coconut-natilla-recipe": [
-    {
-      "name": "milk",
-      "measure": "3 Cups"
-    },
-    {
-      "name": "cornstarch",
-      "measure": "1 cup"
-    },
-    {
-      "name": "cornstarch",
-      "measure": "2 tablespoons"
-    },
-    {
-      "name": "coconut milk",
-      "measure": "1 cup"
-    },
-    {
-      "name": "coconut",
-      "measure": "1/2 cup"
-    },
-    {
-      "name": "cinnamon stick",
-      "measure": "2"
-    },
-    {
-      "name": "condensed milk",
-      "measure": "1 Can"
-    },
-    {
-      "name": "vanilla extract",
-      "measure": "1/2 tsp"
-    },
-    {
-      "name": "sugar",
-      "measure": "1/3 cup"
-    },
-    {
-      "name": "salt",
-      "measure": "Pinch"
-    },
-    {
-      "name": "butter",
-      "measure": "1 tablespoon"
-    },
-    {
-      "name": "cinnamon",
-      "measure": "To taste"
-    }
-  ],
+  "beef-stroganoff": [],
+  "coconut-natilla-recipe": [],
   "stir-fried-chicken-with-chillies-basil": [],
-  "grits": [
-    {
-      "name": "grit",
-      "measure": "1/4 cup"
-    },
-    {
-      "name": "salt",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "water",
-      "measure": "1 cup"
-    }
-  ],
-  "honey-cookies": [
-    {
-      "name": "honey",
-      "measure": "50g"
-    },
-    {
-      "name": "rye flour",
-      "measure": "300ml"
-    },
-    {
-      "name": "water",
-      "measure": "100ml"
-    }
-  ],
-  "corned-beef-and-cabbage": [
-    {
-      "name": "beef brisket",
-      "measure": "3 Lbs"
-    },
-    {
-      "name": "potato",
-      "measure": "10"
-    },
-    {
-      "name": "carrot",
-      "measure": "5"
-    },
-    {
-      "name": "cabbage",
-      "measure": "1 head"
-    }
-  ],
-  "creamy-mango-smoothie": [
-    {
-      "name": "mango",
-      "measure": "3 Large"
-    },
-    {
-      "name": "vanilla extract",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "condensed milk",
-      "measure": "1/2 cup"
-    },
-    {
-      "name": "ice cube",
-      "measure": "Large handful"
-    }
-  ],
-  "vegetarian-chilli": [
-    {
-      "name": "roasted vegetable",
-      "measure": "400g"
-    },
-    {
-      "name": "kidney bean",
-      "measure": "1 can"
-    },
-    {
-      "name": "tomato",
-      "measure": "1 can"
-    },
-    {
-      "name": "mixed grain",
-      "measure": "1 Packet"
-    }
-  ],
-  "yorkshire-puddings": [
-    {
-      "name": "flour",
-      "measure": "140g"
-    },
-    {
-      "name": "egg",
-      "measure": "4"
-    },
-    {
-      "name": "milk",
-      "measure": "200ml"
-    },
-    {
-      "name": "sunflower oil",
-      "measure": "Drizzle"
-    }
-  ],
-  "aussie-burgers": [
-    {
-      "name": "lean steak",
-      "measure": "500g"
-    },
-    {
-      "name": "beetroot",
-      "measure": "100g"
-    },
-    {
-      "name": "naan bread",
-      "measure": "2 small"
-    },
-    {
-      "name": "rocket",
-      "measure": "50g"
-    },
-    {
-      "name": "soured cream chive dip",
-      "measure": "4 tablespoons"
-    }
-  ],
-  "gambas-al-ajillo": [
-    {
-      "name": "king prawn",
-      "measure": "12"
-    },
-    {
-      "name": "garlic clove",
-      "measure": "3"
-    },
-    {
-      "name": "olive oil",
-      "measure": "100 ml"
-    },
-    {
-      "name": "cayenne pepper",
-      "measure": "3"
-    },
-    {
-      "name": "parsley",
-      "measure": "1 tablespoon chopped"
-    }
-  ],
-  "honey-teriyaki-salmon": [
-    {
-      "name": "salmon",
-      "measure": "1 lb"
-    },
-    {
-      "name": "olive oil",
-      "measure": "1 tablespoon"
-    },
-    {
-      "name": "soy sauce",
-      "measure": "2 tablespoons"
-    },
-    {
-      "name": "sake",
-      "measure": "2 tablespoons"
-    },
-    {
-      "name": "sesame seed",
-      "measure": "4 tablespoons"
-    }
-  ],
-  "hummus": [
-    {
-      "name": "chickpea",
-      "measure": "400g"
-    },
-    {
-      "name": "tahini paste",
-      "measure": "1 tablespoon"
-    },
-    {
-      "name": "garlic clove",
-      "measure": "1 large"
-    },
-    {
-      "name": "greek yogurt",
-      "measure": "3  tablespoons"
-    },
-    {
-      "name": "lemon",
-      "measure": "Juice of half"
-    }
-  ],
-  "raspberry-mousse": [
-    {
-      "name": "gelatine leaf",
-      "measure": "2"
-    },
-    {
-      "name": "raspberry",
-      "measure": "350g"
-    },
-    {
-      "name": "caster sugar",
-      "measure": "60g"
-    },
-    {
-      "name": "lemon",
-      "measure": "Juice of 1"
-    },
-    {
-      "name": "whipping cream",
-      "measure": "500ml"
-    }
-  ],
-  "silken-tofu-with-sesame-soy-sauce": [
-    {
-      "name": "silken tofu",
-      "measure": "16 ounces"
-    },
-    {
-      "name": "soy sauce",
-      "measure": "3  tablespoons"
-    },
-    {
-      "name": "chinese sesame sauce",
-      "measure": "2 tablespoons"
-    },
-    {
-      "name": "scallion",
-      "measure": "1 sliced"
-    },
-    {
-      "name": "sesame seed",
-      "measure": "2 tsp"
-    }
-  ],
-  "squash-linguine": [
-    {
-      "name": "butternut squash",
-      "measure": "350g"
-    },
-    {
-      "name": "garlic",
-      "measure": "3 parts"
-    },
-    {
-      "name": "olive oil",
-      "measure": "3 tbs"
-    },
-    {
-      "name": "linguine pasta",
-      "measure": "350g"
-    },
-    {
-      "name": "sage",
-      "measure": "Small bunch"
-    }
-  ],
-  "strawberries-romanoff": [
-    {
-      "name": "strawberry",
-      "measure": "2 pint"
-    },
-    {
-      "name": "sugar",
-      "measure": "4 tbs"
-    },
-    {
-      "name": "grand marnier",
-      "measure": "4 tbs"
-    },
-    {
-      "name": "cream",
-      "measure": "1 cup"
-    },
-    {
-      "name": "sour cream",
-      "measure": "1/4 cup"
-    }
-  ],
-  "thai-beef-stir-fry": [
-    {
-      "name": "vegetable oil",
-      "measure": "2 tbsp"
-    },
-    {
-      "name": "beef",
-      "measure": "400g"
-    },
-    {
-      "name": "red chilli",
-      "measure": "1 sliced"
-    },
-    {
-      "name": "oyster sauce",
-      "measure": "2 tblsp"
-    },
-    {
-      "name": "basil leave",
-      "measure": "Handful"
-    }
-  ],
-  "chicken-lollipop": [
-    {
-      "name": "chicken wing",
-      "measure": "2 Lbs"
-    },
-    {
-      "name": "black pepper",
-      "measure": "1 tablespoon"
-    },
-    {
-      "name": "paprika",
-      "measure": "1 tablespoon"
-    },
-    {
-      "name": "garlic",
-      "measure": "1 tablespoon"
-    },
-    {
-      "name": "salt",
-      "measure": "1 tablespoon"
-    },
-    {
-      "name": "cornstarch",
-      "measure": "4 tablespoons"
-    }
-  ],
-  "fettuccine-alfredo": [
-    {
-      "name": "fettuccine",
-      "measure": "1 lb"
-    },
-    {
-      "name": "heavy cream",
-      "measure": "1/2 cup"
-    },
-    {
-      "name": "butter",
-      "measure": "1/2 cup"
-    },
-    {
-      "name": "parmesan",
-      "measure": "1/2 cup"
-    },
-    {
-      "name": "parsley",
-      "measure": "2 tbsp"
-    },
-    {
-      "name": "black pepper",
-      "measure": ""
-    }
-  ],
-  "ful-medames": [
-    {
-      "name": "broad bean",
-      "measure": "2 cups"
-    },
-    {
-      "name": "parsley",
-      "measure": "1/3 cup"
-    },
-    {
-      "name": "olive oil",
-      "measure": "Dash"
-    },
-    {
-      "name": "lemon",
-      "measure": "3"
-    },
-    {
-      "name": "garlic clove",
-      "measure": "4"
-    },
-    {
-      "name": "cumin",
-      "measure": "Sprinking"
-    }
-  ],
-  "quick-gazpacho": [
-    {
-      "name": "passata",
-      "measure": "250g"
-    },
-    {
-      "name": "red pepper",
-      "measure": "1 chopped"
-    },
-    {
-      "name": "red chilli",
-      "measure": "1 chopped"
-    },
-    {
-      "name": "garlic",
-      "measure": "1 clove peeled crushed"
-    },
-    {
-      "name": "sherry vinegar",
-      "measure": "1 teaspoon"
-    },
-    {
-      "name": "lime",
-      "measure": "Juice of 1/2"
-    }
-  ],
-  "rice-and-beans": [
-    {
-      "name": "kidney bean",
-      "measure": "1/2 bag"
-    },
-    {
-      "name": "coconut milk",
-      "measure": "1 Can"
-    },
-    {
-      "name": "onion",
-      "measure": "1 Diced"
-    },
-    {
-      "name": "scotch bonnet",
-      "measure": "3"
-    },
-    {
-      "name": "black pepper",
-      "measure": "1 tablespoon"
-    },
-    {
-      "name": "salt",
-      "measure": "1/2 tbs"
-    }
-  ],
-  "spaghetti-alla-carbonara": [
-    {
-      "name": "spaghetti",
-      "measure": "320g"
-    },
-    {
-      "name": "egg yolk",
-      "measure": "6"
-    },
-    {
-      "name": "salt",
-      "measure": "As required"
-    },
-    {
-      "name": "bacon",
-      "measure": "150g"
-    },
-    {
-      "name": "pecorino",
-      "measure": "50g"
-    },
-    {
-      "name": "black pepper",
-      "measure": "As required"
-    }
-  ],
-  "sticky-chicken": [
-    {
-      "name": "chicken drumstick",
-      "measure": "8"
-    },
-    {
-      "name": "soy sauce",
-      "measure": "2 tblsp"
-    },
-    {
-      "name": "honey",
-      "measure": "1 tablespoon"
-    },
-    {
-      "name": "olive oil",
-      "measure": "1 tblsp"
-    },
-    {
-      "name": "tomato puree",
-      "measure": "1 teaspoon"
-    },
-    {
-      "name": "dijon mustard",
-      "measure": "1 tbsp"
-    }
-  ],
-  "thai-drumsticks": [
-    {
-      "name": "sweet chilli sauce",
-      "measure": "2 tablespoons"
-    },
-    {
-      "name": "orange",
-      "measure": "Zest of 1"
-    },
-    {
-      "name": "orange",
-      "measure": "2 tblsp"
-    },
-    {
-      "name": "garlic",
-      "measure": "1 clove peeled crushed"
-    },
-    {
-      "name": "thai red curry paste",
-      "measure": "1 tblsp"
-    },
-    {
-      "name": "chicken drumstick",
-      "measure": "8"
-    }
-  ],
-  "tarte-tatin": [
-    {
-      "name": "puff pastry",
-      "measure": "300g"
-    },
-    {
-      "name": "plain flour",
-      "measure": "Dusting"
-    },
-    {
-      "name": "braeburn apple",
-      "measure": "6"
-    },
-    {
-      "name": "caster sugar",
-      "measure": "100g"
-    },
-    {
-      "name": "butter",
-      "measure": "85g"
-    },
-    {
-      "name": "creme fraiche",
-      "measure": "to serve"
-    }
-  ],
-  "anzac-biscuits": [
-    {
-      "name": "porridge oat",
-      "measure": "85g"
-    },
-    {
-      "name": "desiccated coconut",
-      "measure": "85g"
-    },
-    {
-      "name": "plain flour",
-      "measure": "100g"
-    },
-    {
-      "name": "caster sugar",
-      "measure": "100g"
-    },
-    {
-      "name": "butter",
-      "measure": "100g"
-    },
-    {
-      "name": "golden syrup",
-      "measure": "1 tblsp"
-    },
-    {
-      "name": "bicarbonate soda",
-      "measure": "1 teaspoon"
-    }
-  ],
-  "apple-pie": [
-    {
-      "name": "apple",
-      "measure": "4"
-    },
-    {
-      "name": "egg",
-      "measure": "2"
-    },
-    {
-      "name": "sugar",
-      "measure": "125ml"
-    },
-    {
-      "name": "flour",
-      "measure": "1 1/2 cups"
-    },
-    {
-      "name": "salt",
-      "measure": "1/2 tsp"
-    },
-    {
-      "name": "bicarbonate soda",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "sour milk",
-      "measure": "250ml"
-    }
-  ],
-  "banana-pancakes": [
-    {
-      "name": "banana",
-      "measure": "1 large"
-    },
-    {
-      "name": "egg",
-      "measure": "2 medium"
-    },
-    {
-      "name": "baking powder",
-      "measure": "pinch"
-    },
-    {
-      "name": "vanilla extract",
-      "measure": "spinkling"
-    },
-    {
-      "name": "oil",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "pecan nut",
-      "measure": "25g"
-    },
-    {
-      "name": "raspberry",
-      "measure": "125g"
-    }
-  ],
-  "blini-pancakes": [
-    {
-      "name": "buckwheat",
-      "measure": "1/2 cup"
-    },
-    {
-      "name": "flour",
-      "measure": "2/3 Cup"
-    },
-    {
-      "name": "salt",
-      "measure": "1/2 tsp"
-    },
-    {
-      "name": "yeast",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "milk",
-      "measure": "1 cup"
-    },
-    {
-      "name": "butter",
-      "measure": "2 tbs"
-    },
-    {
-      "name": "egg",
-      "measure": "1 Seperated"
-    }
-  ],
-  "chicken-marengo": [
-    {
-      "name": "olive oil",
-      "measure": "1 tbs"
-    },
-    {
-      "name": "mushroom",
-      "measure": "300g"
-    },
-    {
-      "name": "chicken leg",
-      "measure": "4"
-    },
-    {
-      "name": "passata",
-      "measure": "500g"
-    },
-    {
-      "name": "chicken stock cube",
-      "measure": "1"
-    },
-    {
-      "name": "black olive",
-      "measure": "100g"
-    },
-    {
-      "name": "parsley",
-      "measure": "Chopped"
-    }
-  ],
-  "cinnamon-roll-cookies": [
-    {
-      "name": "plain flour",
-      "measure": "250g"
-    },
-    {
-      "name": "unsalted butter",
-      "measure": "180g"
-    },
-    {
-      "name": "caster sugar",
-      "measure": "85g"
-    },
-    {
-      "name": "egg",
-      "measure": "1 medium"
-    },
-    {
-      "name": "salt",
-      "measure": "Pinch"
-    },
-    {
-      "name": "cinnamon",
-      "measure": "2 tsp"
-    },
-    {
-      "name": "brown sugar",
-      "measure": "30g"
-    }
-  ],
-  "corned-beef-hash": [
-    {
-      "name": "unsalted butter",
-      "measure": "3  tablespoons"
-    },
-    {
-      "name": "onion",
-      "measure": "1 medium chopped"
-    },
-    {
-      "name": "corned beef",
-      "measure": "3 Cups"
-    },
-    {
-      "name": "potato",
-      "measure": "3 chopped"
-    },
-    {
-      "name": "kosher salt",
-      "measure": "Dash"
-    },
-    {
-      "name": "black pepper",
-      "measure": "Dash"
-    },
-    {
-      "name": "freshly parsley",
-      "measure": "Chopped"
-    }
-  ],
-  "cottage-cheese-and-feta-stuffed-peppers": [
-    {
-      "name": "red pepper",
-      "measure": "4"
-    },
-    {
-      "name": "feta",
-      "measure": "100g"
-    },
-    {
-      "name": "cottage cheese",
-      "measure": "200g"
-    },
-    {
-      "name": "chive",
-      "measure": "1 tablespoon chopped"
-    },
-    {
-      "name": "parsley",
-      "measure": "1 tablespoon chopped"
-    },
-    {
-      "name": "salt",
-      "measure": "1/4 tsp"
-    },
-    {
-      "name": "lemon juice",
-      "measure": "1 tablespoon"
-    }
-  ],
-  "crispy-eggplant": [
-    {
-      "name": "egg plant",
-      "measure": "1 large"
-    },
-    {
-      "name": "breadcrumb",
-      "measure": "1 cup"
-    },
-    {
-      "name": "sesame seed",
-      "measure": "50g"
-    },
-    {
-      "name": "egg",
-      "measure": "2"
-    },
-    {
-      "name": "salt",
-      "measure": "To taste"
-    },
-    {
-      "name": "pepper",
-      "measure": "To taste"
-    },
-    {
-      "name": "vegetable oil",
-      "measure": "For frying"
-    }
-  ],
-  "english-breakfast": [
-    {
-      "name": "sausage",
-      "measure": "2"
-    },
-    {
-      "name": "bacon",
-      "measure": "3"
-    },
-    {
-      "name": "mushroom",
-      "measure": "2"
-    },
-    {
-      "name": "tomato",
-      "measure": "2"
-    },
-    {
-      "name": "black pudding",
-      "measure": "1 Slice"
-    },
-    {
-      "name": "egg",
-      "measure": "2"
-    },
-    {
-      "name": "bread",
-      "measure": "1 Slice"
-    }
-  ],
-  "extra-crispy-chicken-wings": [
-    {
-      "name": "chicken wing",
-      "measure": "2 Lbs"
-    },
-    {
-      "name": "salt",
-      "measure": "To taste"
-    },
-    {
-      "name": "black pepper",
-      "measure": "1 tablespoon"
-    },
-    {
-      "name": "garlic powder",
-      "measure": "1 tablespoon"
-    },
-    {
-      "name": "turmeric",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "oil",
-      "measure": "For frying"
-    },
-    {
-      "name": "cassava",
-      "measure": "1 1/2 cup"
-    }
-  ],
-  "flan": [
-    {
-      "name": "sugar",
-      "measure": "100g"
-    },
-    {
-      "name": "milk",
-      "measure": "350g"
-    },
-    {
-      "name": "sugar",
-      "measure": "45g"
-    },
-    {
-      "name": "vanilla pod",
-      "measure": "1"
-    },
-    {
-      "name": "egg yolk",
-      "measure": "4"
-    },
-    {
-      "name": "egg",
-      "measure": "2"
-    },
-    {
-      "name": "dulce de leche",
-      "measure": "To taste"
-    }
-  ],
-  "french-omelette": [
-    {
-      "name": "egg",
-      "measure": "3"
-    },
-    {
-      "name": "butter",
-      "measure": "2 knobs"
-    },
-    {
-      "name": "parmesan",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "tarragon leave",
-      "measure": "3 chopped"
-    },
-    {
-      "name": "parsley",
-      "measure": "1 tbs chopped"
-    },
-    {
-      "name": "chive",
-      "measure": "1 tbs chopped"
-    },
-    {
-      "name": "gruy re",
-      "measure": "4 tbs"
-    }
-  ],
-  "sesame-cucumber-salad": [
-    {
-      "name": "cucumber",
-      "measure": "2 medium"
-    },
-    {
-      "name": "salt",
-      "measure": "1/2 tsp"
-    },
-    {
-      "name": "sesame seed oil",
-      "measure": "2 tsp"
-    },
-    {
-      "name": "rice vinegar",
-      "measure": "2 tablespoons"
-    },
-    {
-      "name": "basil leave",
-      "measure": "6"
-    },
-    {
-      "name": "red chilli flake",
-      "measure": "1/2 tsp"
-    },
-    {
-      "name": "sesame seed",
-      "measure": "2 tsp"
-    }
-  ],
-  "spanish-chicken": [
-    {
-      "name": "chicken thigh",
-      "measure": "8"
-    },
-    {
-      "name": "onion",
-      "measure": "3 sliced thinly"
-    },
-    {
-      "name": "paprika",
-      "measure": "2 teaspoons"
-    },
-    {
-      "name": "lemon",
-      "measure": "Zest and juice of 1"
-    },
-    {
-      "name": "parsley",
-      "measure": "Handful"
-    },
-    {
-      "name": "chicken stock",
-      "measure": "150ml"
-    },
-    {
-      "name": "olive oil",
-      "measure": "1 tablespoon"
-    }
-  ],
-  "toad-in-the-hole": [
-    {
-      "name": "sausage",
-      "measure": "8"
-    },
-    {
-      "name": "vegetable oil",
-      "measure": "3 tbsp"
-    },
-    {
-      "name": "plain flour",
-      "measure": "100g"
-    },
-    {
-      "name": "egg",
-      "measure": "2 medium"
-    },
-    {
-      "name": "horseradish",
-      "measure": "1 tbsp grated"
-    },
-    {
-      "name": "milk",
-      "measure": "225ml"
-    },
-    {
-      "name": "cherry tomato",
-      "measure": "200g"
-    }
-  ],
-  "air-fryer-patatas-bravas": [
-    {
-      "name": "potato",
-      "measure": "900g"
-    },
-    {
-      "name": "olive oil",
-      "measure": "3  tablespoons"
-    },
-    {
-      "name": "onion",
-      "measure": "1 chopped"
-    },
-    {
-      "name": "garlic",
-      "measure": "1 clove peeled crushed"
-    },
-    {
-      "name": "paprika",
-      "measure": "1 tblsp"
-    },
-    {
-      "name": "tomato puree",
-      "measure": "1 tblsp"
-    },
-    {
-      "name": "tinned tomato",
-      "measure": "225g"
-    },
-    {
-      "name": "basil leave",
-      "measure": "To serve"
-    }
-  ],
-  "bang-bang-prawn-salad": [
-    {
-      "name": "rice noodle",
-      "measure": "140g"
-    },
-    {
-      "name": "peanut butter",
-      "measure": "3 tablespoons"
-    },
-    {
-      "name": "coconut milk",
-      "measure": "4 tablespoons"
-    },
-    {
-      "name": "sweet chilli sauce",
-      "measure": "3  tablespoons"
-    },
-    {
-      "name": "spring onion",
-      "measure": "3 sliced thinly"
-    },
-    {
-      "name": "cucumber",
-      "measure": "1 sliced"
-    },
-    {
-      "name": "bean sprout",
-      "measure": "300g"
-    },
-    {
-      "name": "prawn",
-      "measure": "200g"
-    }
-  ],
-  "beef-sunday-roast": [
-    {
-      "name": "beef",
-      "measure": "8 slices"
-    },
-    {
-      "name": "broccoli",
-      "measure": "12 florets"
-    },
-    {
-      "name": "potato",
-      "measure": "1 Packet"
-    },
-    {
-      "name": "carrot",
-      "measure": "1 Packet"
-    },
-    {
-      "name": "plain flour",
-      "measure": "140g"
-    },
-    {
-      "name": "egg",
-      "measure": "4"
-    },
-    {
-      "name": "milk",
-      "measure": "200ml"
-    },
-    {
-      "name": "sunflower oil",
-      "measure": "drizzle (for cooking)"
-    }
-  ],
-  "chocolate-avocado-mousse": [
-    {
-      "name": "banana",
-      "measure": "1"
-    },
-    {
-      "name": "cacao",
-      "measure": "3 tbsp"
-    },
-    {
-      "name": "avocado",
-      "measure": "1"
-    },
-    {
-      "name": "honey",
-      "measure": "2 tblsp"
-    },
-    {
-      "name": "lemon juice",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "vanilla",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "water",
-      "measure": "2 tbsp"
-    },
-    {
-      "name": "sea salt",
-      "measure": "pinch"
-    }
-  ],
-  "falafel": [
-    {
-      "name": "sunflower oil",
-      "measure": "2 tablespoons"
-    },
-    {
-      "name": "onion",
-      "measure": "1 chopped"
-    },
-    {
-      "name": "garlic",
-      "measure": "1 clove peeled crushed"
-    },
-    {
-      "name": "chickpea",
-      "measure": "400g"
-    },
-    {
-      "name": "cumin",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "coriander",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "parsley",
-      "measure": "Handful"
-    },
-    {
-      "name": "egg",
-      "measure": "1 beaten"
-    }
-  ],
-  "full-english-breakfast": [
-    {
-      "name": "sausage",
-      "measure": "4"
-    },
-    {
-      "name": "bacon",
-      "measure": "4"
-    },
-    {
-      "name": "mushroom",
-      "measure": "4"
-    },
-    {
-      "name": "tomato",
-      "measure": "3"
-    },
-    {
-      "name": "black pudding",
-      "measure": "2 sliced"
-    },
-    {
-      "name": "egg",
-      "measure": "2"
-    },
-    {
-      "name": "bread",
-      "measure": "1 Slice"
-    },
-    {
-      "name": "baked bean",
-      "measure": "100g"
-    }
-  ],
-  "key-lime-pie": [
-    {
-      "name": "digestive biscuit",
-      "measure": "300g"
-    },
-    {
-      "name": "butter",
-      "measure": "150g"
-    },
-    {
-      "name": "condensed milk",
-      "measure": "400g"
-    },
-    {
-      "name": "egg yolk",
-      "measure": "3"
-    },
-    {
-      "name": "lime",
-      "measure": "4"
-    },
-    {
-      "name": "double cream",
-      "measure": "300ml"
-    },
-    {
-      "name": "icing sugar",
-      "measure": "1 tbls"
-    },
-    {
-      "name": "lime",
-      "measure": "to serve"
-    }
-  ],
-  "ramen-noodles-with-boiled-egg": [
-    {
-      "name": "noodle",
-      "measure": "1 Packet"
-    },
-    {
-      "name": "water",
-      "measure": "2 cups"
-    },
-    {
-      "name": "egg",
-      "measure": "1 large"
-    },
-    {
-      "name": "soy sauce",
-      "measure": "1 tbsp"
-    },
-    {
-      "name": "chilli sauce",
-      "measure": "1/2 tsp"
-    },
-    {
-      "name": "spring onion",
-      "measure": "1 tbls"
-    },
-    {
-      "name": "salt",
-      "measure": "1/2 tsp"
-    },
-    {
-      "name": "pepper",
-      "measure": "1/2 tbs"
-    }
-  ],
-  "rock-cakes": [
-    {
-      "name": "self-raising flour",
-      "measure": "225g"
-    },
-    {
-      "name": "caster sugar",
-      "measure": "75g"
-    },
-    {
-      "name": "baking powder",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "butter",
-      "measure": "125g"
-    },
-    {
-      "name": "fruit",
-      "measure": "150g"
-    },
-    {
-      "name": "egg",
-      "measure": "1"
-    },
-    {
-      "name": "milk",
-      "measure": "1 tbs"
-    },
-    {
-      "name": "vanilla extract",
-      "measure": "2 tsp"
-    }
-  ],
-  "salmon-avocado-salad": [
-    {
-      "name": "salmon",
-      "measure": "400g"
-    },
-    {
-      "name": "avocado",
-      "measure": "3"
-    },
-    {
-      "name": "cucumber",
-      "measure": "1"
-    },
-    {
-      "name": "spinach",
-      "measure": "400g"
-    },
-    {
-      "name": "mint",
-      "measure": "4 tbs"
-    },
-    {
-      "name": "lime",
-      "measure": "zest and juice of 1"
-    },
-    {
-      "name": "honey",
-      "measure": "2 tsp"
-    },
-    {
-      "name": "olive oil",
-      "measure": "3 tbs"
-    }
-  ],
-  "shopska-salad": [
-    {
-      "name": "cucumber",
-      "measure": "1 sliced"
-    },
-    {
-      "name": "tomato",
-      "measure": "3 Cups"
-    },
-    {
-      "name": "red onion",
-      "measure": "1/4"
-    },
-    {
-      "name": "green pepper",
-      "measure": "1 chopped"
-    },
-    {
-      "name": "salt",
-      "measure": "1 tsp"
-    },
-    {
-      "name": "olive oil",
-      "measure": "1/4 cup"
-    },
-    {
-      "name": "feta",
-      "measure": "1/3 cup"
-    },
-    {
-      "name": "parsley",
-      "measure": "2 tbs chopped"
-    }
-  ],
+  "grits": [],
+  "honey-cookies": [],
+  "corned-beef-and-cabbage": [],
+  "creamy-mango-smoothie": [],
+  "vegetarian-chilli": [],
+  "yorkshire-puddings": [],
+  "aussie-burgers": [],
+  "gambas-al-ajillo": [],
+  "honey-teriyaki-salmon": [],
+  "hummus": [],
+  "raspberry-mousse": [],
+  "silken-tofu-with-sesame-soy-sauce": [],
+  "squash-linguine": [],
+  "strawberries-romanoff": [],
+  "thai-beef-stir-fry": [],
+  "chicken-lollipop": [],
+  "fettuccine-alfredo": [],
+  "ful-medames": [],
+  "quick-gazpacho": [],
+  "rice-and-beans": [],
+  "spaghetti-alla-carbonara": [],
+  "sticky-chicken": [],
+  "thai-drumsticks": [],
+  "tarte-tatin": [],
+  "anzac-biscuits": [],
+  "apple-pie": [],
+  "banana-pancakes": [],
+  "blini-pancakes": [],
+  "chicken-marengo": [],
+  "cinnamon-roll-cookies": [],
+  "corned-beef-hash": [],
+  "cottage-cheese-and-feta-stuffed-peppers": [],
+  "crispy-eggplant": [],
+  "english-breakfast": [],
+  "extra-crispy-chicken-wings": [],
+  "flan": [],
+  "french-omelette": [],
+  "sesame-cucumber-salad": [],
+  "spanish-chicken": [],
+  "toad-in-the-hole": [],
+  "air-fryer-patatas-bravas": [],
+  "bang-bang-prawn-salad": [],
+  "beef-sunday-roast": [],
+  "chocolate-avocado-mousse": [],
+  "falafel": [],
+  "full-english-breakfast": [],
+  "key-lime-pie": [],
+  "ramen-noodles-with-boiled-egg": [],
+  "rock-cakes": [],
+  "salmon-avocado-salad": [],
+  "shopska-salad": [],
   "smoky-chicken-skewers": [],
   "sweet-potato-salad": [],
   "moroccan-carrot-soup": [],
