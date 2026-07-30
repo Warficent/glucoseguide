@@ -85,8 +85,10 @@ function nameVariants(term: string): string[] {
   }
   const stripped = term.replace(/[^\w\s]/g, " ").replace(/\s+/g, " ").trim();
   if (stripped && stripped !== term) variants.push(stripped);
-  const firstTwo = stripped.split(" ").slice(0, 2).join(" ");
+  const words = stripped.split(" ");
+  const firstTwo = words.slice(0, 2).join(" ");
   if (firstTwo.length > 3) variants.push(firstTwo);
+  if (words[0] && words[0].length > 3) variants.push(words[0]);
   return Array.from(new Set(variants));
 }
 
