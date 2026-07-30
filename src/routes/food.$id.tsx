@@ -302,10 +302,11 @@ function GlycemicCard({
               )}
             </p>
             <p>
-              Available carbohydrate is {g.carbs}g total carbs minus about {g.fibre}g
-              fibre
-              {portion !== 1 ? `, at ${portionLabel(portion).toLowerCase()}` : ""}.
+              Fibre is subtracted from total carbohydrate before scoring, since it does
+              not raise glucose
+              {portion !== 1 ? `, shown at ${portionLabel(portion).toLowerCase()}` : ""}.
             </p>
+
             {g.contributors.length > 1 && (
               <p>
                 Carbohydrate comes mainly from{" "}
