@@ -7,9 +7,10 @@ import { IngredientPicker } from "@/components/IngredientPicker";
 import {
   FOODS,
   filterFoodsByIngredients,
-  ingredientsForFood,
+  easeLabel,
   type IngredientMode,
 } from "@/lib/data";
+
 import { useAppState, actions } from "@/lib/store";
 import { Heart, Search, ArrowRight } from "lucide-react";
 
