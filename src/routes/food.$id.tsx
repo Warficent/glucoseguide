@@ -257,7 +257,7 @@ function GlycemicCard({
       </div>
       <p className="mt-1 text-xs text-ink/50">For {portionLabel(portion).toLowerCase()}</p>
 
-      <dl className="mt-3 grid grid-cols-3 gap-2 text-center">
+      <dl className="mt-3 grid grid-cols-2 gap-2 text-center">
         <div className="rounded-xl bg-white p-3">
           <dt className="text-[10px] uppercase tracking-wider text-ink/50">Total carb</dt>
           <dd className="font-serif text-2xl font-semibold text-ink tabular-nums">
@@ -272,14 +272,8 @@ function GlycemicCard({
           </dd>
           <dd className="text-[10px] text-ink/50">grams</dd>
         </div>
-        <div className="rounded-xl bg-white p-3">
-          <dt className="text-[10px] uppercase tracking-wider text-ink/50">Avail. carb</dt>
-          <dd className="font-serif text-2xl font-semibold text-ink tabular-nums">
-            {g.availableCarbs}
-          </dd>
-          <dd className="text-[10px] text-ink/50">grams</dd>
-        </div>
       </dl>
+
 
       {g.delayedRise && (
         <p className="mt-3 rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900">
