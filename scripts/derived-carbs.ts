@@ -1,6 +1,6 @@
 import { FOODS } from "../src/lib/data";
 import { glycemicForRecipe } from "../src/lib/glycemic";
-import { MEASURE_INDEX } from "../src/lib/measure-index.generated";
+import { MEASURE_INDEX } from "../src/lib/measures.generated";
 import { INGREDIENT_INDEX } from "../src/lib/ingredient-index.generated";
 import { measureToGrams, lookupComposition } from "../src/lib/composition";
 
