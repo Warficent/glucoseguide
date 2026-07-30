@@ -12,12 +12,12 @@ export const Route = createFileRoute("/move")({
       {
         name: "description",
         content:
-          "See safe exercise options with estimated glucose reduction — or a warning to hold off when your blood sugar is unsafe for activity.",
+          "See safe exercise options for your current reading — or a warning to hold off when your blood sugar is unsafe for activity.",
       },
       { property: "og:title", content: "Activity guidance for your glucose — Glucose Guide" },
       {
         property: "og:description",
-        content: "Safe exercise options and estimated glucose reduction based on your reading.",
+        content: "Safe exercise options based on your current glucose reading.",
       },
       { property: "og:url", content: "https://glucoseguide.lovable.app/move" },
     ],
@@ -131,19 +131,11 @@ function MovePage() {
                     <p className="text-xs text-ink/60">{e.duration}</p>
                     <p className="mt-1 text-xs text-ink/70">{e.note}</p>
                   </div>
-                  <div className="shrink-0 rounded-xl bg-white px-3 py-2 text-center">
-                    <p className="font-serif text-lg font-semibold text-primary tabular-nums">
-                      −{e.reduction}
-                    </p>
-                    <p className="text-[10px] uppercase tracking-wider text-ink/50">
-                      mg/dL
-                    </p>
-                  </div>
                 </li>
               ))}
             </ul>
             <p className="text-center text-xs text-ink/50">
-              Estimates only. Individual response varies.
+              Individual response varies — check your glucose before and after activity.
             </p>
           </>
         )}
