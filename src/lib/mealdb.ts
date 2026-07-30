@@ -37,25 +37,49 @@ export async function findMealForFood(input: {
       return await lookupMeal(pick.idMeal);
     }
     // TheMealDB's name search fails on "&" and other punctuation, so try a
-    // few progressively looser variants of the title.
+    // few progressively looser variants of the title and keep the closest
+    // name match rather than whatever the loosest query happened to return.
+    let best: { meal: Record<string, string>; score: number } | null = null;
     for (const term of nameVariants(input.term)) {
       const res = await fetch(
         `${BASE}/search.php?s=${encodeURIComponent(term)}`,
       ).then((r) => r.json());
       const meals: Record<string, string>[] | null = res?.meals ?? null;
-      if (meals && meals.length > 0) return normalize(meals[0]);
+      if (!meals?.length) continue;
+      for (const m of meals) {
+        const score = titleSimilarity(input.term, m.strMeal ?? "");
+        if (!best || score > best.score) best = { meal: m, score };
+      }
+      if (best && best.score >= 0.9) break;
     }
-    return null;
+    if (!best || best.score < 0.5) return null;
+    return normalize(best.meal);
   } catch {
     return null;
   }
+}
+
+function tokens(s: string): string[] {
+  return s
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 2 && w !== "and" && w !== "the" && w !== "with");
+}
+
+// Share of the requested title's significant words present in the candidate.
+function titleSimilarity(want: string, got: string): number {
+  const a = tokens(want);
+  const b = new Set(tokens(got));
+  if (!a.length) return 0;
+  return a.filter((w) => b.has(w)).length / a.length;
 }
 
 function nameVariants(term: string): string[] {
   const variants = [term];
   if (term.includes("&")) {
     variants.push(term.replace(/&/g, "and"));
-    // Longest word-ish half before the "&" is usually the distinctive one
     const head = term.split("&")[0].trim();
     if (head.length > 3) variants.push(head);
   }
@@ -65,6 +89,7 @@ function nameVariants(term: string): string[] {
   if (firstTwo.length > 3) variants.push(firstTwo);
   return Array.from(new Set(variants));
 }
+
 
 
 async function lookupMeal(id: string): Promise<Meal | null> {
