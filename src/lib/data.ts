@@ -2146,7 +2146,99 @@ export const EXERCISES: Exercise[] = [
     note: "Can briefly raise then lower glucose; effect lasts hours.",
     emoji: "🏋️",
   },
+  {
+    id: "jogging",
+    name: "Easy Jog",
+    duration: "20 min",
+    reduction: 55,
+    note: "Steady running lowers glucose quickly — hydrate and start easy.",
+    emoji: "🏃",
+  },
+  {
+    id: "yoga",
+    name: "Yoga",
+    duration: "30 min",
+    reduction: 15,
+    note: "Gentle and stress-lowering; a mild, slow glucose decrease.",
+    emoji: "🧘",
+  },
+  {
+    id: "stair-climbing",
+    name: "Stair Climbing",
+    duration: "10 min",
+    reduction: 25,
+    note: "Short, intense bursts — a quick drop with little equipment.",
+    emoji: "🪜",
+  },
+  {
+    id: "dancing",
+    name: "Dancing",
+    duration: "25 min",
+    reduction: 40,
+    note: "Fun aerobic movement with a solid, steady glucose reduction.",
+    emoji: "💃",
+  },
+  {
+    id: "hiit",
+    name: "HIIT Circuit",
+    duration: "15 min",
+    reduction: 45,
+    note: "Intense intervals can spike glucose first, then drop it for hours.",
+    emoji: "⚡",
+  },
+  {
+    id: "rowing",
+    name: "Rowing",
+    duration: "20 min",
+    reduction: 45,
+    note: "Full-body cardio that burns glucose fast at moderate effort.",
+    emoji: "🚣",
+  },
+  {
+    id: "hiking",
+    name: "Hiking",
+    duration: "45–60 min",
+    reduction: 65,
+    note: "Long, low-intensity effort — carry carbs, lows can come later.",
+    emoji: "🥾",
+  },
+  {
+    id: "elliptical",
+    name: "Elliptical",
+    duration: "25 min",
+    reduction: 40,
+    note: "Low-impact cardio that's easy on joints and steady on glucose.",
+    emoji: "🎿",
+  },
+  {
+    id: "housework",
+    name: "Housework & Gardening",
+    duration: "30 min",
+    reduction: 20,
+    note: "Everyday activity counts — a gentle, gradual reduction.",
+    emoji: "🧹",
+  },
+  {
+    id: "stretching",
+    name: "Stretching Break",
+    duration: "10 min",
+    reduction: 8,
+    note: "Very light movement — best for breaking up long sitting.",
+    emoji: "🤸",
+  },
+  {
+    id: "basketball",
+    name: "Basketball / Pickup Sport",
+    duration: "30 min",
+    reduction: 55,
+    note: "Mixed-intensity play; check glucose at halftime.",
+    emoji: "🏀",
+  },
 ];
+
+export type EaseLevel = "Easy" | "Medium" | "Involved";
+export const EASE_LEVELS: EaseLevel[] = ["Easy", "Medium", "Involved"];
+
 
 export type Zone = "severe-low" | "low" | "in-range" | "high" | "severe-high";
 
@@ -2178,7 +2270,11 @@ export function zoneColor(z: Zone): string {
   }[z];
 }
 
-export function suggestFoods(mgdl: number, liked: string[]): Food[] {
+export function suggestFoods(
+  mgdl: number,
+  liked: string[],
+  ease?: EaseLevel | null,
+): Food[] {
   const z = zoneFor(mgdl);
   let pool: Food[];
   if (z === "severe-low" || z === "low") {
@@ -2188,6 +2284,7 @@ export function suggestFoods(mgdl: number, liked: string[]): Food[] {
   } else {
     pool = FOODS.filter((f) => f.impact >= 4 && f.impact <= 8);
   }
+  if (ease) pool = pool.filter((f) => easeLabel(f.id) === ease);
   // Keep the zone-appropriate front of the pool, then prefer the easiest to make.
   const shortlist = pool.slice(0, 24);
   const ranked = [...shortlist].sort((a, b) => {

@@ -4,11 +4,13 @@ import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { AppShell } from "@/components/AppShell";
 import { IngredientPicker } from "@/components/IngredientPicker";
+import { EaseFilter } from "@/components/EaseFilter";
 import {
   FOODS,
   filterFoodsByIngredients,
   easeLabel,
   type IngredientMode,
+  type EaseLevel,
 } from "@/lib/data";
 
 import { useAppState, actions } from "@/lib/store";
@@ -43,6 +45,7 @@ export const Route = createFileRoute("/select")({
 
 function SelectPage() {
   const [q, setQ] = useState("");
+  const [ease, setEase] = useState<EaseLevel | null>(null);
   const search = Route.useSearch();
   const navigate = Route.useNavigate();
   const liked = useAppState((s) => s.liked);
@@ -62,12 +65,17 @@ function SelectPage() {
     [q],
   );
 
-  const results = useMemo(
-    () => filterFoodsByIngredients(nameFiltered, selected, mode),
-    [nameFiltered, selected, mode],
+  const easeFiltered = useMemo(
+    () => (ease ? nameFiltered.filter((f) => easeLabel(f.id) === ease) : nameFiltered),
+    [nameFiltered, ease],
   );
 
-  const showRecent = !q && selected.length === 0;
+  const results = useMemo(
+    () => filterFoodsByIngredients(easeFiltered, selected, mode),
+    [easeFiltered, selected, mode],
+  );
+
+  const showRecent = !q && selected.length === 0 && !ease;
   const recentFoods = recent
     .map((id) => FOODS.find((f) => f.id === id))
     .filter((f): f is (typeof FOODS)[number] => Boolean(f));
@@ -81,6 +89,8 @@ function SelectPage() {
           onChange={setIngredients}
           onModeChange={setMode}
         />
+
+        <EaseFilter value={ease} onChange={setEase} />
 
         <div className="relative">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40" />
