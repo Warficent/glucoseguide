@@ -2277,8 +2277,12 @@ export function filterFoodsByIngredients(
     const ra = a.matched / a.total;
     const rb = b.matched / b.total;
     if (rb !== ra) return rb - ra;
+    const ea = easeForFood(a.food.id);
+    const eb = easeForFood(b.food.id);
+    if (ea !== eb) return ea - eb;
     return a.food.name.localeCompare(b.food.name);
   });
+
   return results;
 }
 
