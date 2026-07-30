@@ -215,10 +215,9 @@ function PortionSlider({
         One serving is the {baseCarbs}g-carb portion the recipe's published values are
         based on. At {portionLabel(portion).toLowerCase()} that becomes about{" "}
         <strong className="font-semibold text-ink/80">{scaledCarbs}g</strong> of
-        carbohydrate, and the glycemic load and impact score below move with it. The GI
-        itself does not change — it describes the carbohydrate, not how much is on the
-        plate.
+        carbohydrate, and the impact score below moves with it.
       </p>
+
       {portion !== 1 && (
         <button
           onClick={() => onChange(PORTION_STEPS.indexOf(1))}
