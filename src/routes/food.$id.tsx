@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/AppShell";
 import { FOODS } from "@/lib/data";
@@ -13,6 +13,9 @@ import {
   giBand,
   confidenceLabel,
   confidenceExplanation,
+  scaleGlycemic,
+  impactFromGL,
+  type GlycemicResult,
 } from "@/lib/glycemic";
 
 export const Route = createFileRoute("/food/$id")({
