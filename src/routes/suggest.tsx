@@ -137,6 +137,12 @@ function SuggestPage() {
           ))}
         </ul>
 
+        <p className="rounded-2xl bg-lavender p-4 text-xs leading-relaxed text-ink/60">
+          Impact scores are derived from published glycemic index values and each
+          recipe's carbohydrate load. They are a guide only — not medical advice, and
+          never a basis for insulin dosing. Confirm carbs with your care team.
+        </p>
+
         {showMoveCTA && (
           <Link
             to="/move"
