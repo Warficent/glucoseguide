@@ -582,21 +582,21 @@ export function scaleGlycemic(result: GlycemicResult, factor: number): GlycemicR
 }
 
 /**
- * Glycemic load -> 1-10 impact, where 1 raises glucose the most.
+ * Glycemic load -> 1-10 impact, where 10 raises glucose the most.
  * Bands are anchored on the clinical GL cut-offs (low <=10, medium 11-19,
  * high >=20) and extended above 20 for very high-load plates.
  */
 export function impactFromGL(gl: number): number {
-  if (gl >= 45) return 1;
-  if (gl >= 38) return 2;
-  if (gl >= 31) return 3;
-  if (gl >= 25) return 4;
-  if (gl >= 20) return 5;
-  if (gl >= 15) return 6;
-  if (gl >= 11) return 7;
-  if (gl >= 7) return 8;
-  if (gl >= 3) return 9;
-  return 10;
+  if (gl >= 45) return 10;
+  if (gl >= 38) return 9;
+  if (gl >= 31) return 8;
+  if (gl >= 25) return 7;
+  if (gl >= 20) return 6;
+  if (gl >= 15) return 5;
+  if (gl >= 11) return 4;
+  if (gl >= 7) return 3;
+  if (gl >= 3) return 2;
+  return 1;
 }
 
 export function glBand(gl: number): "Low" | "Medium" | "High" {
