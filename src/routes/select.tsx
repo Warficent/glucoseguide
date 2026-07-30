@@ -7,9 +7,10 @@ import { IngredientPicker } from "@/components/IngredientPicker";
 import {
   FOODS,
   filterFoodsByIngredients,
-  ingredientsForFood,
+  easeLabel,
   type IngredientMode,
 } from "@/lib/data";
+
 import { useAppState, actions } from "@/lib/store";
 import { Heart, Search, ArrowRight } from "lucide-react";
 
@@ -103,6 +104,7 @@ function SelectPage() {
                   food={f}
                   liked={liked.includes(f.id)}
                   onLike={() => actions.toggleLike(f.id)}
+                  ease={easeLabel(f.id)}
                 />
               ))}
             </ul>
@@ -116,7 +118,7 @@ function SelectPage() {
                 ? mode === "only"
                   ? "You can make right now"
                   : "Uses ingredients you have"
-                : "All foods"}
+                : "All foods — easiest first"}
             </h2>
             {selected.length > 0 && (
               <span className="text-xs text-ink/50 tabular-nums">
@@ -125,24 +127,23 @@ function SelectPage() {
             )}
           </div>
           <ul className="space-y-2">
-            {results
-              .sort((a, b) => {
-                if (selected.length === 0) return a.food.name.localeCompare(b.food.name);
-                return 0;
-              })
-              .map(({ food, matched, total }) => (
-                <FoodRow
-                  key={food.id}
-                  food={food}
-                  liked={liked.includes(food.id)}
-                  onLike={() => actions.toggleLike(food.id)}
-                  matchInfo={
-                    selected.length > 0 && total > 0
-                      ? `${matched} of ${total} ingredients`
+            {results.map(({ food, matched, total }) => (
+              <FoodRow
+                key={food.id}
+                food={food}
+                liked={liked.includes(food.id)}
+                onLike={() => actions.toggleLike(food.id)}
+                ease={easeLabel(food.id)}
+                matchInfo={
+                  selected.length > 0 && total > 0
+                    ? `${matched} of ${total} ingredients`
+                    : total > 0
+                      ? `${total} ingredients`
                       : undefined
-                  }
-                />
-              ))}
+                }
+              />
+            ))}
+
             {results.length === 0 && (
               <li className="rounded-2xl bg-lavender p-6 text-center text-sm text-ink/60">
                 {selected.length > 0
@@ -164,11 +165,13 @@ function FoodRow({
   liked,
   onLike,
   matchInfo,
+  ease,
 }: {
   food: (typeof FOODS)[number];
   liked: boolean;
   onLike: () => void;
   matchInfo?: string;
+  ease?: string;
 }) {
   return (
     <li className="flex items-center gap-3 rounded-2xl bg-lavender p-3">
@@ -181,11 +184,19 @@ function FoodRow({
           {food.emoji}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-semibold text-ink">{food.name}</p>
+          <div className="flex items-center gap-2">
+            <p className="truncate font-semibold text-ink">{food.name}</p>
+            {ease && (
+              <span className="shrink-0 rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink/60">
+                {ease}
+              </span>
+            )}
+          </div>
           <p className="text-xs text-ink/60">
             {food.carbs}g carbs{matchInfo ? ` · ${matchInfo}` : ""}
           </p>
         </div>
+
         <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary tabular-nums">
           {food.impact}/10
         </span>
