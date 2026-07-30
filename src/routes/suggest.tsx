@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { EmergencyBanner } from "@/components/EmergencyBanner";
 import { useAppState } from "@/lib/store";
-import { suggestFoods, zoneFor, zoneLabel, zoneColor } from "@/lib/data";
+import { suggestFoods, zoneFor, zoneLabel, zoneColor, easeLabel } from "@/lib/data";
 import { Heart, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/suggest")({
