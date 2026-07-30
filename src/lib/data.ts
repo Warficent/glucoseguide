@@ -1043,7 +1043,7 @@ export const FOODS: Food[] = [
     id: "asado",
     name: "Asado",
     carbs: 6,
-    impact: 4,
+    impact: 9,
     note: "Grilled beef, chorizo and morcilla \u2014 almost no carbohydrate beyond the small amount in the sausages.",
     emoji: "\ud83c\udf7d\ufe0f",
     mealSearch: { type: "name", term: "Asado" },
