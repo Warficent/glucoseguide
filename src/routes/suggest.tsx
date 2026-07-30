@@ -1,8 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { EmergencyBanner } from "@/components/EmergencyBanner";
+import { EaseFilter } from "@/components/EaseFilter";
 import { useAppState } from "@/lib/store";
-import { suggestFoods, zoneFor, zoneLabel, zoneColor, easeLabel } from "@/lib/data";
+import { suggestFoods, zoneFor, zoneLabel, zoneColor, easeLabel   type EaseLevel,
+} from "@/lib/data";
 import { Heart, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/suggest")({
@@ -27,6 +30,7 @@ export const Route = createFileRoute("/suggest")({
 });
 
 function SuggestPage() {
+  const [ease, setEase] = useState<EaseLevel | null>(null);
   const glucose = useAppState((s) => s.glucose);
   const liked = useAppState((s) => s.liked);
 
@@ -50,7 +54,7 @@ function SuggestPage() {
   }
 
   const zone = zoneFor(glucose);
-  const foods = suggestFoods(glucose, liked);
+  const foods = suggestFoods(glucose, liked, ease);
   const showMoveCTA = zone === "high";
 
   const headline =
@@ -93,6 +97,8 @@ function SuggestPage() {
                 : "Sorted by how gently they raise glucose."}
           </p>
         </div>
+
+        <EaseFilter value={ease} onChange={setEase} />
 
         <ul className="space-y-3">
           {foods.map((f) => (
