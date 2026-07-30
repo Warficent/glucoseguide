@@ -2264,11 +2264,25 @@ export function suggestFoods(
   if (z === "severe-low" || z === "low") {
     pool = [...FOODS].sort((a, b) => a.impact - b.impact);
   } else if (z === "high" || z === "severe-high") {
-    pool = [...FOODS].sort((a, b) => b.impact - a.impact);
+    // When already high, sorting by impact alone can still surface sugary,
+    // high-GI dishes that merely happen to be small. Gate on the glycemic
+    // numbers themselves: low GI (<=55, Rovner 2009) AND low GL (<=10).
+    const scored = FOODS.map((f) => ({ f, g: glycemicForRecipe(f) }));
+    let gated = scored.filter((s) => s.g.gi <= 55 && s.g.gl <= 10);
+    if (gated.length < 8) {
+      gated = scored.filter((s) => s.g.gi <= 69 && s.g.gl <= 10);
+    }
+    pool = gated
+      .sort((a, b) => a.g.gl - b.g.gl || a.g.gi - b.g.gi)
+      .map((s) => s.f);
   } else {
     pool = FOODS.filter((f) => f.impact >= 4 && f.impact <= 8);
   }
-  if (ease) pool = pool.filter((f) => easeLabel(f.id) === ease);
+  if (ease) {
+    const filtered = pool.filter((f) => easeLabel(f.id) === ease);
+    if (filtered.length) pool = filtered;
+  }
+
   // Keep the zone-appropriate front of the pool, then prefer the easiest to make.
   const shortlist = pool.slice(0, 24);
   const ranked = [...shortlist].sort((a, b) => {
@@ -2285,6 +2299,8 @@ export function suggestFoods(
 
 
 import { INGREDIENT_INDEX } from "./ingredient-index.generated";
+import { glycemicForRecipe } from "./glycemic";
+
 
 export type IngredientMode = "any" | "only";
 
