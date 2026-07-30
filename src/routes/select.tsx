@@ -116,7 +116,7 @@ function SelectPage() {
                 ? mode === "only"
                   ? "You can make right now"
                   : "Uses ingredients you have"
-                : "All foods"}
+                : "All foods — easiest first"}
             </h2>
             {selected.length > 0 && (
               <span className="text-xs text-ink/50 tabular-nums">
@@ -125,24 +125,23 @@ function SelectPage() {
             )}
           </div>
           <ul className="space-y-2">
-            {results
-              .sort((a, b) => {
-                if (selected.length === 0) return a.food.name.localeCompare(b.food.name);
-                return 0;
-              })
-              .map(({ food, matched, total }) => (
-                <FoodRow
-                  key={food.id}
-                  food={food}
-                  liked={liked.includes(food.id)}
-                  onLike={() => actions.toggleLike(food.id)}
-                  matchInfo={
-                    selected.length > 0 && total > 0
-                      ? `${matched} of ${total} ingredients`
+            {results.map(({ food, matched, total }) => (
+              <FoodRow
+                key={food.id}
+                food={food}
+                liked={liked.includes(food.id)}
+                onLike={() => actions.toggleLike(food.id)}
+                ease={easeLabel(food.id)}
+                matchInfo={
+                  selected.length > 0 && total > 0
+                    ? `${matched} of ${total} ingredients`
+                    : total > 0
+                      ? `${total} ingredients`
                       : undefined
-                  }
-                />
-              ))}
+                }
+              />
+            ))}
+
             {results.length === 0 && (
               <li className="rounded-2xl bg-lavender p-6 text-center text-sm text-ink/60">
                 {selected.length > 0
