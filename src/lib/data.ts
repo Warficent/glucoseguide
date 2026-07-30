@@ -2188,13 +2188,20 @@ export function suggestFoods(mgdl: number, liked: string[]): Food[] {
   } else {
     pool = FOODS.filter((f) => f.impact >= 4 && f.impact <= 8);
   }
-  pool = [...pool].sort((a, b) => {
+  // Keep the zone-appropriate front of the pool, then prefer the easiest to make.
+  const shortlist = pool.slice(0, 24);
+  const ranked = [...shortlist].sort((a, b) => {
     const la = liked.includes(a.id) ? 0 : 1;
     const lb = liked.includes(b.id) ? 0 : 1;
-    return la - lb;
+    if (la !== lb) return la - lb;
+    const ea = easeForFood(a.id);
+    const eb = easeForFood(b.id);
+    if (ea !== eb) return ea - eb;
+    return a.name.localeCompare(b.name);
   });
-  return pool.slice(0, 4);
+  return ranked.slice(0, 4);
 }
+
 
 import { INGREDIENT_INDEX } from "./ingredient-index.generated";
 
