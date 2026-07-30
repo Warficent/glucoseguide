@@ -104,6 +104,7 @@ function SelectPage() {
                   food={f}
                   liked={liked.includes(f.id)}
                   onLike={() => actions.toggleLike(f.id)}
+                  ease={easeLabel(f.id)}
                 />
               ))}
             </ul>
