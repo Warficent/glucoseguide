@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { ImpactScale } from "@/components/ImpactScale";
 import { useMemo, useState } from "react";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
@@ -165,6 +166,8 @@ function SelectPage() {
             )}
           </ul>
         </section>
+
+        <ImpactScale />
 
         <p className="rounded-2xl bg-lavender p-4 text-xs leading-relaxed text-ink/60">
           Impact scores are computed from published, glucose-referenced glycemic index
