@@ -9,7 +9,6 @@ import {
   FOODS,
   filterFoodsByIngredients,
   easeLabel,
-  easeLabel,
   type IngredientMode,
   type EaseLevel,
 } from "@/lib/data";
