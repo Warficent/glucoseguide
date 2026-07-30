@@ -1192,51 +1192,6 @@ export const FOODS: Food[] = [
     emoji: "\ud83e\uded8",
     mealSearch: { type: "name", term: "Stir-fried chicken with chillies & basil" },
   },
-];
-
-
-export type Exercise = {
-  id: string;
-  name: string;
-  duration: string;
-  reduction: number; // estimated mg/dL reduction
-  note: string;
-  emoji: string;
-};
-
-export const EXERCISES: Exercise[] = [
-  {
-    id: "brisk-walk",
-    name: "Brisk Walk",
-    duration: "20–30 min",
-    reduction: 30,
-    note: "Gentle aerobic movement — safe, reliable glucose reduction.",
-    emoji: "🚶",
-  },
-  {
-    id: "cycling",
-    name: "Cycling",
-    duration: "30 min",
-    reduction: 50,
-    note: "Moderate-intensity cardio drops glucose steadily.",
-    emoji: "🚴",
-  },
-  {
-    id: "swimming",
-    name: "Swimming",
-    duration: "30 min",
-    reduction: 60,
-    note: "Full-body aerobic — strong sustained glucose reduction.",
-    emoji: "🏊",
-  },
-  {
-    id: "strength-training",
-    name: "Strength Training",
-    duration: "20 min",
-    reduction: 20,
-    note: "Can briefly raise then lower glucose; effect lasts hours.",
-    emoji: "🏋️",
-  },
   {
     id: "grits",
     name: "Grits",
@@ -2145,6 +2100,51 @@ export const EXERCISES: Exercise[] = [
     note: "Light portion with modest carbs — an easy, small rise.",
     emoji: "🥣",
     mealSearch: { type: "name", term: "Simple heart of palm & tomato salad" },
+  },
+];
+
+
+export type Exercise = {
+  id: string;
+  name: string;
+  duration: string;
+  reduction: number; // estimated mg/dL reduction
+  note: string;
+  emoji: string;
+};
+
+export const EXERCISES: Exercise[] = [
+  {
+    id: "brisk-walk",
+    name: "Brisk Walk",
+    duration: "20–30 min",
+    reduction: 30,
+    note: "Gentle aerobic movement — safe, reliable glucose reduction.",
+    emoji: "🚶",
+  },
+  {
+    id: "cycling",
+    name: "Cycling",
+    duration: "30 min",
+    reduction: 50,
+    note: "Moderate-intensity cardio drops glucose steadily.",
+    emoji: "🚴",
+  },
+  {
+    id: "swimming",
+    name: "Swimming",
+    duration: "30 min",
+    reduction: 60,
+    note: "Full-body aerobic — strong sustained glucose reduction.",
+    emoji: "🏊",
+  },
+  {
+    id: "strength-training",
+    name: "Strength Training",
+    duration: "20 min",
+    reduction: 20,
+    note: "Can briefly raise then lower glucose; effect lasts hours.",
+    emoji: "🏋️",
   },
 ];
 
