@@ -114,7 +114,9 @@ function SuggestPage() {
                   </div>
                   <p className="text-xs text-ink/60">
                     {f.carbs}g carbs · impact {f.impact}/10
+                    {easeLabel(f.id) ? ` · ${easeLabel(f.id)} to make` : ""}
                   </p>
+
                 </div>
                 <ArrowRight className="h-4 w-4 shrink-0 text-ink/40" />
               </Link>
