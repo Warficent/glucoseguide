@@ -2299,6 +2299,8 @@ export function suggestFoods(
 
 
 import { INGREDIENT_INDEX } from "./ingredient-index.generated";
+import { glycemicForRecipe } from "./glycemic";
+
 
 export type IngredientMode = "any" | "only";
 
