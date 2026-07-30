@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/AppShell";
-import { FOODS, type Food } from "@/lib/data";
+import { FOODS } from "@/lib/data";
 import { useAppState, actions } from "@/lib/store";
 import { findMealForFood, splitInstructions, type Meal } from "@/lib/mealdb";
 import { ArrowLeft, Heart, ExternalLink, ChefHat, Youtube } from "lucide-react";
@@ -45,7 +45,7 @@ export const Route = createFileRoute("/food/$id")({
       ],
     };
   },
-  loader: ({ params }): { food: Food } => {
+  loader: ({ params }) => {
     const food = FOODS.find((f) => f.id === params.id);
     if (!food) throw notFound();
     return { food };
