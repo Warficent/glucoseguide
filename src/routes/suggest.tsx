@@ -13,7 +13,7 @@ import {
   type EaseLevel,
 } from "@/lib/data";
 
-import { glycemicForRecipe, giBand } from "@/lib/glycemic";
+import { glycemicForRecipe } from "@/lib/glycemic";
 import { Heart, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/suggest")({
