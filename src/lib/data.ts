@@ -2270,7 +2270,11 @@ export function zoneColor(z: Zone): string {
   }[z];
 }
 
-export function suggestFoods(mgdl: number, liked: string[]): Food[] {
+export function suggestFoods(
+  mgdl: number,
+  liked: string[],
+  ease?: EaseLevel | null,
+): Food[] {
   const z = zoneFor(mgdl);
   let pool: Food[];
   if (z === "severe-low" || z === "low") {
@@ -2280,6 +2284,7 @@ export function suggestFoods(mgdl: number, liked: string[]): Food[] {
   } else {
     pool = FOODS.filter((f) => f.impact >= 4 && f.impact <= 8);
   }
+  if (ease) pool = pool.filter((f) => easeLabel(f.id) === ease);
   // Keep the zone-appropriate front of the pool, then prefer the easiest to make.
   const shortlist = pool.slice(0, 24);
   const ranked = [...shortlist].sort((a, b) => {
