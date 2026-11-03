@@ -87,6 +87,4 @@ This repo is synced with the Lovable project. Changes made in Lovable are commit
 
 Built by Luke Novak, Chemical Engineering at Vanderbilt University.
 
-## License
 
-Add a license of your choice (for example, MIT). See [choosealicense.com](https://choosealicense.com/).
