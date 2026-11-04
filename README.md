@@ -3,7 +3,6 @@
 Food, recipe, and activity guidance for people living with Type 1 diabetes. You log a blood glucose reading, and Glucose Guide gives instant suggestions tailored to that reading.
 
 **Live demo:** https://glucoseguide.lovable.app
-**GitHub Pages:** https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
 
 > ⚠️ **Informational only. Not medical advice.** Glucose Guide does not replace guidance from your doctor, endocrinologist, or diabetes care team. Always follow your own treatment plan, especially when treating a low.
 
